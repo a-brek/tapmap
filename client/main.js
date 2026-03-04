@@ -203,20 +203,20 @@ function _scatter(center, spread) {
 function spawnExplosion(lat, lng) {
   if (typeof THREE === 'undefined') return;
   const pos = globe.getCoords(lat, lng, 0.03);
-  const mat = new THREE.MeshStandardMaterial({
-    color: 0xffaa00, emissive: 0xff6600, emissiveIntensity: 2.5,
-    transparent: true, opacity: 1,
+
+  const mat = new THREE.MeshBasicMaterial({
+    color: 0xff8800, transparent: true, opacity: 1,
+    blending: THREE.AdditiveBlending, depthWrite: false,
   });
-  const mesh = new THREE.Mesh(new THREE.SphereGeometry(1, 8, 8), mat);
+  const mesh = new THREE.Mesh(new THREE.SphereGeometry(0.6, 8, 8), mat);
   mesh.position.set(pos.x, pos.y, pos.z);
   globe.scene().add(mesh);
 
   const t0 = performance.now();
   (function tick(now) {
-    const t = Math.min((now - t0) / 650, 1);
-    mesh.scale.setScalar(1 + t * 5);
+    const t = Math.min((now - t0) / 500, 1);
+    mesh.scale.setScalar(1 + t * 3);
     mat.opacity = 1 - t;
-    mat.emissiveIntensity = 2.5 * (1 - t);
     if (t < 1) {
       requestAnimationFrame(tick);
     } else {
@@ -229,27 +229,85 @@ function spawnExplosion(lat, lng) {
 
 function spawnMissile(fromLat, fromLng, toLat, toLng, headColor) {
   if (typeof THREE === 'undefined') return;
-  const mat = new THREE.MeshStandardMaterial({
-    color: headColor, emissive: headColor, emissiveIntensity: 1.8,
-  });
-  const mesh = new THREE.Mesh(new THREE.SphereGeometry(0.3, 6, 6), mat);
-  globe.scene().add(mesh);
 
+  // Decode color components for trail vertex colors
+  const r = ((headColor >> 16) & 0xff) / 255;
+  const g = ((headColor >> 8)  & 0xff) / 255;
+  const b = ((headColor)       & 0xff) / 255;
+
+  // Missile head: large dim outer glow + small bright white core
+  const outerMat = new THREE.MeshBasicMaterial({
+    color: headColor, transparent: true, opacity: 0.5,
+    blending: THREE.AdditiveBlending, depthWrite: false,
+  });
+  const innerMat = new THREE.MeshBasicMaterial({
+    color: 0xffffff, transparent: true, opacity: 0.95,
+    blending: THREE.AdditiveBlending, depthWrite: false,
+  });
+  const outer = new THREE.Mesh(new THREE.SphereGeometry(0.55, 8, 8), outerMat);
+  const inner = new THREE.Mesh(new THREE.SphereGeometry(0.22, 6, 6), innerMat);
+  const head  = new THREE.Group();
+  head.add(outer);
+  head.add(inner);
+  globe.scene().add(head);
+
+  // Glowing trail — Line with vertex colors fading to black (= invisible with AdditiveBlending)
+  const TRAIL = 28;
+  const tPos = new Float32Array(TRAIL * 3);
+  const tCol = new Float32Array(TRAIL * 3);
+  const trailGeo = new THREE.BufferGeometry();
+  trailGeo.setAttribute('position', new THREE.BufferAttribute(tPos, 3));
+  trailGeo.setAttribute('color',    new THREE.BufferAttribute(tCol, 3));
+  trailGeo.setDrawRange(0, 0);
+  const trailMat = new THREE.LineBasicMaterial({
+    vertexColors: true, blending: THREE.AdditiveBlending, depthWrite: false,
+  });
+  globe.scene().add(new THREE.Line(trailGeo, trailMat));
+  const trailLine = globe.scene().children[globe.scene().children.length - 1];
+
+  const history = [];
   const duration = 2200 + Math.random() * 1200;
   const t0 = performance.now();
   (function tick(now) {
-    const t = Math.min((now - t0) / duration, 1);
+    const t   = Math.min((now - t0) / duration, 1);
     const lat = fromLat + (toLat - fromLat) * t;
     const lng = fromLng + (toLng - fromLng) * t;
-    const alt = 0.22 * Math.sin(t * Math.PI); // arc above surface
-    const p = globe.getCoords(lat, lng, alt);
-    mesh.position.set(p.x, p.y, p.z);
+    const alt = 0.22 * Math.sin(t * Math.PI);
+    const p   = globe.getCoords(lat, lng, alt);
+
+    head.position.set(p.x, p.y, p.z);
+
+    // Pulse the white core slightly
+    const pulse = 0.85 + 0.15 * Math.sin(now * 0.03);
+    inner.scale.setScalar(pulse);
+
+    // Update trail history
+    history.push({ x: p.x, y: p.y, z: p.z });
+    if (history.length > TRAIL) history.shift();
+
+    const count = history.length;
+    for (let i = 0; i < count; i++) {
+      const age = i / (count - 1 || 1); // 0=oldest(tail) → 1=newest(head)
+      tPos[i * 3]     = history[i].x;
+      tPos[i * 3 + 1] = history[i].y;
+      tPos[i * 3 + 2] = history[i].z;
+      // age² makes the fade hug tighter to the head
+      tCol[i * 3]     = r * age * age;
+      tCol[i * 3 + 1] = g * age * age;
+      tCol[i * 3 + 2] = b * age * age;
+    }
+    trailGeo.setDrawRange(0, count);
+    trailGeo.attributes.position.needsUpdate = true;
+    trailGeo.attributes.color.needsUpdate    = true;
+
     if (t < 1) {
       requestAnimationFrame(tick);
     } else {
-      globe.scene().remove(mesh);
-      mesh.geometry.dispose();
-      mat.dispose();
+      globe.scene().remove(head);
+      globe.scene().remove(trailLine);
+      outer.geometry.dispose(); outerMat.dispose();
+      inner.geometry.dispose(); innerMat.dispose();
+      trailGeo.dispose(); trailMat.dispose();
       spawnExplosion(toLat, toLng);
     }
   })(t0);
