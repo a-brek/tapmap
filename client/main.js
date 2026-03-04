@@ -20,6 +20,8 @@ const state = {
   rings:        [],     // globe ring data
   gameOver:     false,
   hintVisible:  false,
+  actuals:      [], // [{lat, lng, name}] — revealed correct locations
+  guesses:      [], // [{lat, lng}] — confirmed guesses
 };
 
 let globe = null;
@@ -150,12 +152,6 @@ const UFO_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="13" 
   <circle class="ufo-l5" cx="42" cy="24" r="2.5" fill="#ff0" opacity="0.9"/>
 </svg>`;
 
-// ── Nuclear Mushroom Cloud (Iran) ──────────────────────────
-const nukeEl = document.createElement('div');
-nukeEl.style.cssText = 'pointer-events:none;transform:translate(-50%,-80%);';
-nukeEl.innerHTML = `<img src="https://media.giphy.com/media/eCT0Q6KVM1772xHAE3/giphy.gif" width="16" height="16" style="display:block;" alt="">`;
-
-const nukeData = [{ lat: 32.4, lng: 53.7, el: nukeEl, alt: 0.06 }];
 
 // Blink the UFO lights via CSS in the main document
 (function injectUfoStyle() {
@@ -187,13 +183,85 @@ function startUfoOrbit() {
     const lat = INCLINATION * Math.sin(angle * Math.PI / 180 * 0.6);
     const lng = angle % 360 - 180;
     globe.htmlElementsData([
-      ...nukeData,
       { lat, lng, el: shadowEl, alt: 0.001 },
       { lat, lng, el,           alt: 0.08  },
     ]);
     requestAnimationFrame(tick);
   }
   requestAnimationFrame(tick);
+}
+
+// ── 3D Mushroom Cloud ──────────────────────────────────────
+// Built with Three.js geometry — no external model file needed.
+// Globe radius in globe.gl's Three.js scene is ~100 units.
+function createMushroomCloud() {
+  const group = new THREE.Group();
+
+  const smokeMat = new THREE.MeshStandardMaterial({
+    color: 0x887766, roughness: 1, transparent: true, opacity: 0.88,
+  });
+  const fireMat = new THREE.MeshStandardMaterial({
+    color: 0xff5500, emissive: 0xff2200, emissiveIntensity: 0.45,
+    roughness: 0.8, transparent: true, opacity: 0.92,
+  });
+
+  // Blast ring (lies flat on the surface)
+  const blastRing = new THREE.Mesh(
+    new THREE.TorusGeometry(3.5, 0.65, 8, 32),
+    new THREE.MeshStandardMaterial({
+      color: 0xff6600, emissive: 0xff4400, emissiveIntensity: 0.9,
+      transparent: true, opacity: 0.65,
+    })
+  );
+  blastRing.rotation.x = Math.PI / 2;
+  blastRing.position.y = 0.4;
+  group.add(blastRing);
+
+  // Stem (narrow at top, wider at base)
+  const stem = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.7, 2.2, 10, 14),
+    smokeMat
+  );
+  stem.position.y = 5;
+  group.add(stem);
+
+  // Inner fireball
+  const fireball = new THREE.Mesh(new THREE.SphereGeometry(3, 16, 12), fireMat);
+  fireball.scale.y = 0.55;
+  fireball.position.y = 10.5;
+  group.add(fireball);
+
+  // Main mushroom cap
+  const cap = new THREE.Mesh(new THREE.SphereGeometry(5, 20, 14), smokeMat);
+  cap.scale.y = 0.42;
+  cap.position.y = 12.5;
+  group.add(cap);
+
+  // Anvil top (wide flat cloud spreading at the top)
+  const anvil = new THREE.Mesh(
+    new THREE.SphereGeometry(6.5, 20, 10),
+    new THREE.MeshStandardMaterial({
+      color: 0xccbbaa, roughness: 1, transparent: true, opacity: 0.72,
+    })
+  );
+  anvil.scale.y = 0.19;
+  anvil.position.y = 14.5;
+  group.add(anvil);
+
+  return group;
+}
+
+// Place a 3D mushroom cloud on the globe at the given lat/lng.
+// Must be called after initGlobe().
+function placeMushroomCloud(lat, lng) {
+  if (typeof THREE === 'undefined') return;
+  const coords = globe.getCoords(lat, lng, 0.02);
+  const cloud   = createMushroomCloud();
+  // Orient so +Y points radially outward from the globe center
+  const radial = new THREE.Vector3(coords.x, coords.y, coords.z).normalize();
+  cloud.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), radial);
+  cloud.position.set(coords.x, coords.y, coords.z);
+  globe.scene().add(cloud);
 }
 
 // ── Globe Setup ────────────────────────────────────────────
@@ -265,15 +333,7 @@ function initGlobe() {
     .polygonStrokeColor(() => 'rgba(0, 201, 167, 0.75)')
     .polygonAltitude(0.007)
     // Interaction
-    .onGlobeClick(({ lat, lng }) => handleGlobeClick(lat, lng))
-    .onZoom(({ altitude }) => {
-      const img = nukeEl.querySelector('img');
-      if (img) {
-        const size = Math.round(Math.max(8, Math.min(90, 30 * 2.2 / altitude)));
-        img.width = size;
-        img.height = size;
-      }
-    });
+    .onGlobeClick(({ lat, lng }) => handleGlobeClick(lat, lng));
 
   globe.pointOfView(randomGlobeView());
 
@@ -406,6 +466,8 @@ async function confirmGuess() {
       lat: actual.lat, lng: actual.lng,
       color: '#00c9a7', size: 0.28, altitude: 0.06,
     });
+    state.guesses.push({ lat, lng });
+    state.actuals.push({ lat: actual.lat, lng: actual.lng, name: actual.name });
     state.rings.push({ lat: actual.lat, lng: actual.lng });
     state.arcs.push({
       startLat: lat, startLng: lng,
@@ -566,6 +628,8 @@ function saveResultLocally() {
     localStorage.setItem(`tapmap-result-${state.date}`, JSON.stringify({
       totalScore:  state.totalScore,
       roundScores: state.roundScores,
+      guesses:     state.guesses,
+      actuals:     state.actuals,
     }));
   } catch (_) {}
 }
@@ -817,6 +881,7 @@ function setGlobeWorld(world) {
 // ── Init ───────────────────────────────────────────────────
 async function init() {
   initGlobe();
+  placeMushroomCloud(32.4, 53.7); // Iran
   startUfoOrbit();
 
   // Wire up events
@@ -824,6 +889,14 @@ async function init() {
   qs('#next-btn').addEventListener('click', nextRound);
   qs('#hint-toggle').addEventListener('click', toggleHint);
   qs('#copy-btn').addEventListener('click', copyShareText);
+  qs('#view-map-btn').addEventListener('click', () => {
+    qs('#game-over').setAttribute('hidden', '');
+    qs('#results-fab').removeAttribute('hidden');
+  });
+  qs('#results-fab').addEventListener('click', () => {
+    qs('#results-fab').setAttribute('hidden', '');
+    qs('#game-over').removeAttribute('hidden');
+  });
 
   // Auth init and puzzle fetch run in parallel
   try {
@@ -840,7 +913,21 @@ async function init() {
     if (saved) {
       state.totalScore  = saved.totalScore;
       state.roundScores = saved.roundScores;
+      state.guesses     = saved.guesses || [];
+      state.actuals     = saved.actuals || [];
       state.round       = 5;
+
+      // Restore markers, arcs, labels, rings on the globe
+      saved.guesses?.forEach((g, i) => {
+        const a = saved.actuals?.[i];
+        state.markers.push({ id: `guess-${i}`,  lat: g.lat, lng: g.lng, color: '#e89620', size: 0.2,  altitude: 0.07 });
+        if (a) {
+          state.markers.push({ id: `actual-${i}`, lat: a.lat, lng: a.lng, color: '#00c9a7', size: 0.28, altitude: 0.06 });
+          state.arcs.push({ startLat: g.lat, startLng: g.lng, endLat: a.lat, endLng: a.lng, color: ['#e89620', '#00c9a7'] });
+          state.labels.push({ lat: a.lat, lng: a.lng, text: a.name, color: '#00c9a7' });
+          state.rings.push({ lat: a.lat, lng: a.lng });
+        }
+      });
     }
 
     // Dismiss loading screen, then show auth modal if needed
@@ -852,6 +939,11 @@ async function init() {
     }, { once: true });
 
     if (saved) {
+      // Render restored markers
+      globe.pointsData([...state.markers]);
+      globe.arcsData([...state.arcs]);
+      globe.ringsData([...state.rings]);
+      globe.labelsData([...OCEAN_LABELS, ...state.labels]);
       // Already played — go straight to results
       setTimeout(() => showGameOver(true), 650);
     } else {

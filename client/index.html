@@ -97,21 +97,29 @@
   <!-- ── Game Over ─────────────────────────────────────────── -->
   <div id="game-over" hidden>
     <div class="game-over-card">
-      <div class="game-over-title">Today's Results</div>
-      <div id="final-score">0</div>
-      <div id="score-grade"></div>
-      <!-- Player rank badge — shown after score is saved -->
+      <div class="game-over-header">
+        <div class="game-over-title">Today's Results</div>
+        <button id="view-map-btn" class="view-map-btn" title="View map">↙ Map</button>
+      </div>
+      <div class="game-over-score-row">
+        <div id="final-score">0</div>
+        <div id="score-grade"></div>
+      </div>
       <div id="player-rank" class="player-rank" hidden></div>
       <div id="score-breakdown"></div>
       <pre id="share-text" aria-label="Shareable results text"></pre>
       <div class="game-over-actions">
-        <button id="copy-btn" type="button" class="btn-primary">Share Results</button>
-        <button class="leaderboard-trigger btn-outline">View Leaderboard</button>
+        <button id="copy-btn" type="button" class="btn-primary">Share</button>
+        <button class="leaderboard-trigger btn-outline">Leaderboard</button>
       </div>
-      <div class="next-puzzle-label">Next Puzzle In</div>
-      <div id="next-puzzle-countdown">00:00:00</div>
+      <div class="countdown-row">
+        <span class="next-puzzle-label">Next puzzle in</span>
+        <span id="next-puzzle-countdown">00:00:00</span>
+      </div>
     </div>
   </div>
+  <!-- Floating pill shown when card is hidden on mobile -->
+  <button id="results-fab" hidden>Results ↑</button>
 
   <!-- ── Loading Screen ───────────────────────────────────── -->
   <div id="loading" aria-label="Loading">
@@ -198,6 +206,8 @@
     </div>
   </div>
 
+  <!-- Three.js (loaded before globe.gl so we can create 3D objects for custom layers) -->
+  <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
   <!-- globe.gl via CDN — exposes window.Globe -->
   <script src="https://unpkg.com/globe.gl"></script>
   <script src="auth.js"></script>
