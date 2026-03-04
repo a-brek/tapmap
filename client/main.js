@@ -525,7 +525,6 @@ function showGameOver() {
     `Tap Map ${state.date}`,
     grid,
     `Score: ${state.totalScore}/5000`,
-    `tapmap.gg`,
   ].join('\n');
   qs('#share-text').textContent = shareText;
 
