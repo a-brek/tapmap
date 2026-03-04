@@ -51,20 +51,21 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Local strategy — email + password
+// Local strategy — email or username + password
 passport.use(new LocalStrategy(
-  { usernameField: 'email' },
-  async (email, password, done) => {
+  { usernameField: 'identifier' },
+  async (identifier, password, done) => {
     try {
+      const val = identifier.toLowerCase().trim();
       const { rows } = await db.query(
-        'SELECT * FROM users WHERE email = $1',
-        [email.toLowerCase().trim()]
+        'SELECT * FROM users WHERE email = $1 OR lower(username) = $1',
+        [val]
       );
       const user = rows[0];
-      if (!user)               return done(null, false, { message: 'Invalid email or password' });
+      if (!user)               return done(null, false, { message: 'Invalid email/username or password' });
       if (!user.password_hash) return done(null, false, { message: 'This account uses Google sign-in' });
       const ok = await bcrypt.compare(password, user.password_hash);
-      if (!ok)                 return done(null, false, { message: 'Invalid email or password' });
+      if (!ok)                 return done(null, false, { message: 'Invalid email/username or password' });
       return done(null, user);
     } catch (err) {
       return done(err);

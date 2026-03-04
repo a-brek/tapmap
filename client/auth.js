@@ -215,13 +215,13 @@ window.Auth = (() => {
     qs('#signin-form').addEventListener('submit', async e => {
       e.preventDefault();
       const btn  = qs('#signin-submit');
-      const email = qs('#signin-email').value.trim();
-      const pass  = qs('#signin-password').value;
+      const identifier = qs('#signin-identifier').value.trim();
+      const pass       = qs('#signin-password').value;
       btn.disabled = true; btn.textContent = 'Signing in…';
 
       const data = await apiFetch('/api/auth/login', {
         method: 'POST',
-        body: JSON.stringify({ email, password: pass }),
+        body: JSON.stringify({ identifier, password: pass }),
       });
 
       btn.disabled = false; btn.textContent = 'Sign In';

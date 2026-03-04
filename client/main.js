@@ -211,7 +211,7 @@ function handleGlobeClick(lat, lng) {
   // Replace any pending marker
   state.markers = state.markers.filter(m => m.id !== 'pending');
   state.pendingGuess = { lat, lng };
-  state.markers.push({ id: 'pending', lat, lng, color: '#e89620', size: 0.55, altitude: 0.12 });
+  state.markers.push({ id: 'pending', lat, lng, color: '#e89620', size: 0.25, altitude: 0.12 });
   globe.pointsData([...state.markers]);
 
   // Reveal confirm button
@@ -242,14 +242,14 @@ async function confirmGuess() {
 
     // Upgrade pending → confirmed guess marker (drop altitude slightly)
     state.markers = state.markers.map(m =>
-      m.id === 'pending' ? { ...m, id: `guess-${state.round}`, size: 0.45, altitude: 0.07 } : m
+      m.id === 'pending' ? { ...m, id: `guess-${state.round}`, size: 0.2, altitude: 0.07 } : m
     );
 
     // Add actual-location marker
     state.markers.push({
       id: `actual-${state.round}`,
       lat: actual.lat, lng: actual.lng,
-      color: '#00c9a7', size: 0.6, altitude: 0.06,
+      color: '#00c9a7', size: 0.28, altitude: 0.06,
     });
 
     // Pulse ring at actual location
