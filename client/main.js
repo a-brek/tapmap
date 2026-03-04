@@ -351,30 +351,6 @@ async function revealLocation(date, roundIndex, lat, lng) {
 }
 
 // ── Marker Drop Animation ──────────────────────────────────
-function dropMarker(markerId, targetAlt, onLand) {
-  const START_ALT = 1.6;
-  const DURATION  = 520;
-  const start     = performance.now();
-
-  function tick(now) {
-    const t     = Math.min((now - start) / DURATION, 1);
-    const eased = t * t * t; // ease-in cubic — gravity feel
-    const alt   = START_ALT + (targetAlt - START_ALT) * eased;
-
-    state.markers = state.markers.map(m =>
-      m.id === markerId ? { ...m, altitude: alt } : m
-    );
-    globe.pointsData([...state.markers]);
-
-    if (t < 1) {
-      requestAnimationFrame(tick);
-    } else if (onLand) {
-      onLand();
-    }
-  }
-  requestAnimationFrame(tick);
-}
-
 // ── Globe Click ────────────────────────────────────────────
 function handleGlobeClick(lat, lng) {
   if (state.gameOver || !state.puzzle) return;
@@ -383,9 +359,8 @@ function handleGlobeClick(lat, lng) {
   state.markers = state.markers.filter(m => m.id !== 'pending');
   state.pendingGuess = { lat, lng };
   // Start high — dropMarker will animate it down
-  state.markers.push({ id: 'pending', lat, lng, color: '#e89620', size: 0.25, altitude: 1.6 });
+  state.markers.push({ id: 'pending', lat, lng, color: '#e89620', size: 0.25, altitude: 0.12 });
   globe.pointsData([...state.markers]);
-  dropMarker('pending', 0.12);
 
   // Reveal confirm button
   const btn = qs('#confirm-btn');
@@ -429,12 +404,9 @@ async function confirmGuess() {
     state.markers.push({
       id: actualId,
       lat: actual.lat, lng: actual.lng,
-      color: '#00c9a7', size: 0.28, altitude: 1.6,
+      color: '#00c9a7', size: 0.28, altitude: 0.06,
     });
-    dropMarker(actualId, 0.06, () => {
-      state.rings.push({ lat: actual.lat, lng: actual.lng });
-      globe.ringsData([...state.rings]);
-    });
+    state.rings.push({ lat: actual.lat, lng: actual.lng });
     state.arcs.push({
       startLat: lat, startLng: lng,
       endLat: actual.lat, endLng: actual.lng,
@@ -444,6 +416,7 @@ async function confirmGuess() {
 
     const world = state.puzzle.locations[state.round]?.world || 'earth';
     globe.pointsData([...state.markers]);
+    globe.ringsData([...state.rings]);
     globe.arcsData([...state.arcs]);
     globe.labelsData([
       ...(WORLD_CONFIG[world]?.showOceans ? OCEAN_LABELS : []),
