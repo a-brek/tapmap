@@ -20,7 +20,6 @@ const state = {
   rings:        [],     // globe ring data
   gameOver:     false,
   hintVisible:  false,
-  towerEyes:    [], // [{id, lat, lng, el}] — Eye of Sauron markers
 };
 
 let globe = null;
@@ -158,48 +157,17 @@ nukeEl.innerHTML = `<img src="https://media.giphy.com/media/eCT0Q6KVM1772xHAE3/g
 
 const nukeData = [{ lat: 32.4, lng: 53.7, el: nukeEl, alt: 0.06 }];
 
-// Inject UFO + Eye of Sauron styles
-(function injectStyles() {
+// Blink the UFO lights via CSS in the main document
+(function injectUfoStyle() {
   const s = document.createElement('style');
   s.textContent = `
     @keyframes ufo-blink-a { 0%,49%{opacity:0.9} 50%,100%{opacity:0.15} }
     @keyframes ufo-blink-b { 0%,49%{opacity:0.15} 50%,100%{opacity:0.9} }
     .ufo-l1,.ufo-l3,.ufo-l5 { animation: ufo-blink-a 0.8s infinite; }
     .ufo-l2,.ufo-l4          { animation: ufo-blink-b 0.8s infinite; }
-    @keyframes eye-pulse {
-      0%,100% { filter: drop-shadow(0 0 3px #ff4400) drop-shadow(0 0 7px #cc2000); }
-      50%     { filter: drop-shadow(0 0 7px #ff7700) drop-shadow(0 0 14px #ff3300) drop-shadow(0 0 22px #ff0000); }
-    }
-    .sauron-eye { animation: eye-pulse 1.6s ease-in-out infinite; }
   `;
   document.head.appendChild(s);
 })();
-
-// ── Eye of Sauron marker ───────────────────────────────────
-// state.towerEyes = [{id, lat, lng, el}]  — merged into htmlElementsData each UFO frame
-
-function createEyeEl() {
-  const div = document.createElement('div');
-  div.style.cssText = 'pointer-events:none;transform:translate(-50%,-50%);';
-  div.innerHTML = `<svg class="sauron-eye" width="20" height="12" viewBox="0 0 20 12" xmlns="http://www.w3.org/2000/svg">
-    <ellipse cx="10" cy="6" rx="9"   ry="5"   fill="#880000"/>
-    <ellipse cx="10" cy="6" rx="6"   ry="4.2" fill="#cc2200"/>
-    <ellipse cx="10" cy="6" rx="3.5" ry="3.8" fill="#ff5500"/>
-    <ellipse cx="10" cy="6" rx="1.4" ry="5"   fill="#ffaa00" opacity="0.9"/>
-    <ellipse cx="10" cy="6" rx="0.6" ry="4.5" fill="#ffe066" opacity="0.7"/>
-    <ellipse cx="10" cy="6" rx="9"   ry="5"   fill="none" stroke="#ff4400" stroke-width="0.6" opacity="0.7"/>
-  </svg>`;
-  return div;
-}
-
-function addTowerEye(id, lat, lng) {
-  state.towerEyes = state.towerEyes.filter(t => t.id !== id);
-  state.towerEyes.push({ id, lat, lng, el: createEyeEl() });
-}
-
-function removeTowerEye(id) {
-  state.towerEyes = state.towerEyes.filter(t => t.id !== id);
-}
 
 function startUfoOrbit() {
   const INCLINATION = 12;
@@ -222,7 +190,6 @@ function startUfoOrbit() {
       ...nukeData,
       { lat, lng, el: shadowEl, alt: 0.001 },
       { lat, lng, el,           alt: 0.08  },
-      ...state.towerEyes.map(t => ({ lat: t.lat, lng: t.lng, el: t.el, alt: 0.13 })),
     ]);
     requestAnimationFrame(tick);
   }
@@ -391,9 +358,9 @@ function handleGlobeClick(lat, lng) {
   // Replace any pending marker
   state.markers = state.markers.filter(m => m.id !== 'pending');
   state.pendingGuess = { lat, lng };
-  state.markers.push({ id: 'pending', lat, lng, color: '#1a0800', size: 0.22, altitude: 0.12 });
+  // Start high — dropMarker will animate it down
+  state.markers.push({ id: 'pending', lat, lng, color: '#e89620', size: 0.25, altitude: 0.12 });
   globe.pointsData([...state.markers]);
-  addTowerEye('pending', lat, lng);
 
   // Reveal confirm button
   const btn = qs('#confirm-btn');
@@ -424,14 +391,10 @@ async function confirmGuess() {
     state.roundScores.push({ score, distanceKm, emoji, locationName: actual.name, country });
 
     // Upgrade pending → confirmed guess marker
-    const guessId = `guess-${state.round}`;
     state.markers = state.markers.map(m =>
-      m.id === 'pending' ? { ...m, id: guessId, size: 0.2, altitude: 0.07 } : m
+      m.id === 'pending' ? { ...m, id: `guess-${state.round}`, size: 0.2, altitude: 0.07 } : m
     );
     globe.pointsData([...state.markers]);
-    // Rename the eye to match
-    const pendingEye = state.towerEyes.find(t => t.id === 'pending');
-    if (pendingEye) pendingEye.id = guessId;
 
     // Fly globe toward actual location while UFO is en route
     globe.pointOfView({ lat: actual.lat, lng: actual.lng, altitude: 1.8 }, 1200);
