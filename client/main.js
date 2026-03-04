@@ -9,7 +9,7 @@
 // ── State ──────────────────────────────────────────────────
 const state = {
   puzzle:       null,   // { date, title, locations: [{name,story,hint}] }
-  date:         null,   // "YYYY-MM-DD"
+  date:         null,   // "YYYY-MM-DD" or unlimited session ID
   round:        0,      // 0–4
   totalScore:   0,
   roundScores:  [],     // [{score, distanceKm, emoji}]
@@ -20,6 +20,7 @@ const state = {
   rings:        [],     // globe ring data
   gameOver:     false,
   hintVisible:  false,
+  mode:         'daily', // 'daily' | 'unlimited'
 };
 
 let globe = null;
@@ -30,26 +31,26 @@ const AUTO_ADVANCE_MS = 5000; // ms before auto-advancing to next round
 function qs(sel) { return document.querySelector(sel); }
 
 function scoreEmoji(score) {
-  if (score >= 900) return '🟢';
-  if (score >= 700) return '🟡';
-  if (score >= 400) return '🟠';
+  if (score >= 90) return '🟢';
+  if (score >= 70) return '🟡';
+  if (score >= 40) return '🟠';
   if (score >   0) return '🔴';
   return '⚫';
 }
 
 function scoreQuality(score) {
-  if (score >= 900) return ['Pinpoint', 'q-pinpoint'];
-  if (score >= 700) return ['Close',    'q-close'];
-  if (score >= 400) return ['Nearby',   'q-nearby'];
+  if (score >= 90) return ['Pinpoint', 'q-pinpoint'];
+  if (score >= 70) return ['Close',    'q-close'];
+  if (score >= 40) return ['Nearby',   'q-nearby'];
   if (score >   0) return ['Far',      'q-far'];
   return ['Miss', 'q-miss'];
 }
 
 function scoreGrade(total) {
-  if (total >= 4500) return 'Navigator';
-  if (total >= 3500) return 'Cartographer';
-  if (total >= 2500) return 'Traveler';
-  if (total >= 1500) return 'Explorer';
+  if (total >= 450) return 'Navigator';
+  if (total >= 350) return 'Cartographer';
+  if (total >= 250) return 'Traveler';
+  if (total >= 150) return 'Explorer';
   return 'Landlubber';
 }
 
@@ -290,6 +291,57 @@ async function fetchPuzzle() {
   return res.json();
 }
 
+async function fetchUnlimitedPuzzle() {
+  const res = await fetch('/api/puzzle/unlimited');
+  if (!res.ok) throw new Error(`Server returned ${res.status}`);
+  return res.json();
+}
+
+// ── Unlimited Mode ──────────────────────────────────────────
+function resetGameState() {
+  clearTimeout(_nextRoundTimer);
+  _nextRoundTimer = null;
+  state.round        = 0;
+  state.totalScore   = 0;
+  state.roundScores  = [];
+  state.pendingGuess = null;
+  state.markers      = [];
+  state.arcs         = [];
+  state.labels       = [];
+  state.rings        = [];
+  state.gameOver     = false;
+  state.hintVisible  = false;
+
+  globe.pointsData([]);
+  globe.ringsData([]);
+  globe.arcsData([]);
+  globe.labelsData([...OCEAN_LABELS]);
+  globe.polygonsData([]);
+  globe.pointOfView(randomGlobeView(), 800);
+
+  const scoreEl = qs('#score-display');
+  scoreEl.textContent = '0';
+}
+
+async function startUnlimitedMode() {
+  // Hide game-over overlay if showing
+  const overlay = qs('#game-over');
+  overlay.classList.remove('visible');
+  overlay.setAttribute('hidden', '');
+
+  state.mode = 'unlimited';
+  resetGameState();
+
+  try {
+    const puzzle   = await fetchUnlimitedPuzzle();
+    state.puzzle   = puzzle;
+    state.date     = puzzle.date;
+    showCluePanel();
+  } catch (err) {
+    console.error('Failed to fetch unlimited puzzle:', err);
+  }
+}
+
 async function revealLocation(date, roundIndex, lat, lng) {
   const res = await fetch(`/api/puzzle/${date}/reveal/${roundIndex}`, {
     method: 'POST',
@@ -507,6 +559,7 @@ function nextRound() {
 
 // ── localStorage persistence ───────────────────────────────
 function saveResultLocally() {
+  if (state.mode === 'unlimited') return;
   try {
     localStorage.setItem(`tapmap-result-${state.date}`, JSON.stringify({
       totalScore:  state.totalScore,
@@ -525,9 +578,11 @@ function loadResultLocally(date) {
 // ── Game Over ──────────────────────────────────────────────
 function showGameOver(skipSave = false) {
   state.gameOver = true;
+  const isUnlimited = state.mode === 'unlimited';
 
   if (!skipSave) saveResultLocally();
 
+  qs('#game-over-title').textContent = isUnlimited ? 'Unlimited Mode' : 'Today\'s Results';
   qs('#final-score').textContent = state.totalScore.toLocaleString();
   qs('#score-grade').textContent = scoreGrade(state.totalScore);
 
@@ -545,14 +600,30 @@ function showGameOver(skipSave = false) {
     </div>`;
   }).join('');
 
-  // Share text (Wordle-style)
-  const grid = state.roundScores.map(r => r.emoji).join('');
-  const shareText = [
-    `Tap Map ${state.date}`,
-    grid,
-    `Score: ${state.totalScore}/5000`,
-  ].join('\n');
-  qs('#share-text').textContent = shareText;
+  // Share text / play-again toggle
+  if (isUnlimited) {
+    qs('#share-text').hidden = true;
+    qs('#copy-btn').setAttribute('hidden', '');
+    qs('#play-again-btn').removeAttribute('hidden');
+    qs('#go-unlimited-btn').setAttribute('hidden', '');
+    qs('#countdown-section').setAttribute('hidden', '');
+    qs('#player-rank').setAttribute('hidden', '');
+  } else {
+    const grid = state.roundScores.map(r => r.emoji).join('');
+    const shareText = [
+      `Tap Map ${state.date}`,
+      grid,
+      `tapmap.onrender.com`,
+      `Total Score: ${state.totalScore}/500`,
+    ].join('\n');
+    qs('#share-text').hidden = false;
+    qs('#share-text').textContent = shareText;
+    qs('#copy-btn').removeAttribute('hidden');
+    qs('#play-again-btn').setAttribute('hidden', '');
+    qs('#go-unlimited-btn').removeAttribute('hidden');
+    qs('#countdown-section').removeAttribute('hidden');
+    startCountdown();
+  }
 
   // Show overlay
   const overlay = qs('#game-over');
@@ -561,10 +632,8 @@ function showGameOver(skipSave = false) {
     requestAnimationFrame(() => overlay.classList.add('visible'));
   });
 
-  startCountdown();
-
   // Save score + show rank (async — updates UI when server responds)
-  if (!skipSave) {
+  if (!skipSave && !isUnlimited) {
     Auth.saveScore(state.date, state.totalScore, state.roundScores).then(rank => {
       if (rank !== null) showRank(rank);
     });
@@ -758,6 +827,9 @@ async function init() {
   qs('#next-btn').addEventListener('click', nextRound);
   qs('#hint-toggle').addEventListener('click', toggleHint);
   qs('#copy-btn').addEventListener('click', copyShareText);
+  qs('#unlimited-btn').addEventListener('click', startUnlimitedMode);
+  qs('#play-again-btn').addEventListener('click', startUnlimitedMode);
+  qs('#go-unlimited-btn').addEventListener('click', startUnlimitedMode);
 
   // Auth init and puzzle fetch run in parallel
   try {
@@ -768,6 +840,7 @@ async function init() {
 
     state.puzzle = puzzle;
     state.date   = puzzle.date;
+    state.mode   = 'daily';
 
     // Check if this puzzle was already completed today
     const saved = loadResultLocally(puzzle.date);
