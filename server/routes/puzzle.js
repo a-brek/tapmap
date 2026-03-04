@@ -56,11 +56,11 @@ function seededRng(seed) {
 // ---------------------------------------------------------------------------
 const DATE_OVERRIDES = {
   '2026-03-04': [
-    { name: 'Istanbul, Turkey',         lat: 41.0082,  lng: 28.9784,   tier: 1 },
-    { name: 'Havana, Cuba',             lat: 23.1136,  lng: -82.3666,  tier: 2 },
-    { name: 'Ulaanbaatar, Mongolia',    lat: 47.8864,  lng: 106.9057,  tier: 3 },
-    { name: 'Suva, Fiji',              lat: -18.1248, lng: 178.4501,  tier: 4 },
-    { name: 'Ashgabat, Turkmenistan',  lat: 37.9601,  lng: 58.3261,   tier: 5 },
+    { name: 'Mexico City, Mexico',             lat: 19.4326,  lng: -99.1332,  tier: 1 },
+    { name: 'Cape Town, South Africa',         lat: -33.9249, lng: 18.4241,   tier: 2 },
+    { name: 'Minsk, Belarus',                  lat: 53.9045,  lng: 27.5615,   tier: 3 },
+    { name: "Little St. James Island (👀)",    lat: 18.2986,  lng: -64.8999,  tier: 4 },
+    { name: 'Bouvet Island, Norway',           lat: -54.4208, lng: 3.3464,    tier: 5 },
   ],
 };
 
