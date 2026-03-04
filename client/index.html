@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="description" content="MapTap — daily geography guessing game with a 3D globe" />
+  <title>MapTap — Daily Geography Game</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Share+Tech+Mono&family=IBM+Plex+Sans+Condensed:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ── 3D Globe ─────────────────────────────────────────── -->
+  <div id="globe-container"></div>
+
+  <!-- ── HUD Header ───────────────────────────────────────── -->
+  <header id="hud">
+    <div id="game-title">MAP<span>TAP</span></div>
+
+    <div class="hud-center">
+      <div class="hud-label">Round</div>
+      <div id="round-display">1 / 5</div>
+      <div id="round-pips">
+        <div class="pip" data-pip="0"></div>
+        <div class="pip" data-pip="1"></div>
+        <div class="pip" data-pip="2"></div>
+        <div class="pip" data-pip="3"></div>
+        <div class="pip" data-pip="4"></div>
+      </div>
+    </div>
+
+    <div class="hud-right">
+      <div class="hud-score-col">
+        <div class="hud-label">Score</div>
+        <div id="score-display">0</div>
+      </div>
+
+      <!-- Leaderboard shortcut -->
+      <button class="leaderboard-trigger hud-lb-btn" title="Leaderboard">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+          <rect x="18" y="3"  width="4" height="18" rx="1"/>
+          <rect x="10" y="8"  width="4" height="13" rx="1"/>
+          <rect x="2"  y="13" width="4" height="8"  rx="1"/>
+        </svg>
+      </button>
+
+      <!-- User HUD (shown when logged in) -->
+      <div id="user-hud" hidden>
+        <button id="user-hud-btn" class="user-hud-btn" aria-haspopup="true" aria-expanded="false">
+          <span id="user-hud-name">@user</span>
+          <span class="chevron">▾</span>
+        </button>
+        <div id="user-dropdown" hidden>
+          <button id="history-btn" class="dropdown-item">History</button>
+          <button id="logout-btn" class="dropdown-item">Sign Out</button>
+        </div>
+      </div>
+
+      <!-- Sign-in button (shown when logged out) -->
+      <button id="auth-hud-btn" class="auth-hud-btn" hidden>Sign In</button>
+    </div>
+  </header>
+
+  <!-- ── Clue Panel ─────────────────────────────────────────── -->
+  <aside id="clue-panel" aria-live="polite">
+    <div class="panel-header">
+      <div id="round-number">01</div>
+      <div id="round-label">Round 1 of 5</div>
+    </div>
+    <div class="panel-divider"></div>
+    <p id="location-clue"></p>
+    <p id="location-sub">Where in the world?</p>
+
+    <button id="hint-toggle" type="button" aria-expanded="false" hidden>Show Hint</button>
+    <p id="hint-text" aria-hidden="true"></p>
+
+    <p id="guess-prompt">Click the globe to place your guess</p>
+    <button id="confirm-btn" type="button" class="btn-primary" hidden>Confirm Guess</button>
+  </aside>
+
+  <!-- ── Score Popup ────────────────────────────────────────── -->
+  <div id="score-popup" aria-live="assertive">
+    <div class="popup-score-row">
+      <div id="popup-score">+0</div>
+      <div id="popup-quality" class="quality"></div>
+    </div>
+    <div id="popup-distance"></div>
+    <div id="popup-location"></div>
+    <div class="popup-divider"></div>
+    <p id="popup-story"></p>
+    <button id="next-btn" type="button" class="btn-outline">Next Location →</button>
+    <div id="popup-timer-bar"></div>
+  </div>
+
+  <!-- ── Game Over ─────────────────────────────────────────── -->
+  <div id="game-over" hidden>
+    <div class="game-over-card">
+      <div class="game-over-title">Today's Results</div>
+      <div id="final-score">0</div>
+      <div id="score-grade"></div>
+      <!-- Player rank badge — shown after score is saved -->
+      <div id="player-rank" class="player-rank" hidden></div>
+      <div id="score-breakdown"></div>
+      <pre id="share-text" aria-label="Shareable results text"></pre>
+      <div class="game-over-actions">
+        <button id="copy-btn" type="button" class="btn-primary">Copy Results</button>
+        <button class="leaderboard-trigger btn-outline">View Leaderboard</button>
+      </div>
+      <div class="next-puzzle-label">Next Puzzle In</div>
+      <div id="next-puzzle-countdown">00:00:00</div>
+    </div>
+  </div>
+
+  <!-- ── Loading Screen ───────────────────────────────────── -->
+  <div id="loading" aria-label="Loading">
+    <div class="loading-title">MAPTAP</div>
+    <div class="spinner" aria-hidden="true"></div>
+    <div class="loading-text" id="loading-text">Loading today's puzzle…</div>
+  </div>
+
+  <!-- ── Auth Modal ────────────────────────────────────────── -->
+  <div id="auth-modal" class="modal-overlay" hidden aria-modal="true" role="dialog" aria-label="Sign in">
+    <div class="modal-card">
+      <div class="modal-brand">MAP<span>TAP</span></div>
+      <div class="modal-tabs" role="tablist">
+        <button class="modal-tab active" data-tab="signin" role="tab">Sign In</button>
+        <button class="modal-tab" data-tab="signup" role="tab">Sign Up</button>
+      </div>
+      <form id="signin-form" class="auth-form" autocomplete="on">
+        <div class="form-error" id="signin-error" hidden></div>
+        <label class="form-label" for="signin-email">Email</label>
+        <input type="email" id="signin-email" class="form-input" autocomplete="email" required />
+        <label class="form-label" for="signin-password">Password</label>
+        <input type="password" id="signin-password" class="form-input" autocomplete="current-password" required />
+        <button type="submit" id="signin-submit" class="btn-primary">Sign In</button>
+      </form>
+      <form id="signup-form" class="auth-form" hidden autocomplete="on">
+        <div class="form-error" id="signup-error" hidden></div>
+        <label class="form-label" for="signup-username">Username</label>
+        <input type="text" id="signup-username" class="form-input" autocomplete="username" placeholder="3–20 chars, a-z 0-9 _" required />
+        <label class="form-label" for="signup-email">Email</label>
+        <input type="email" id="signup-email" class="form-input" autocomplete="email" required />
+        <label class="form-label" for="signup-password">Password</label>
+        <input type="password" id="signup-password" class="form-input" autocomplete="new-password" required />
+        <button type="submit" id="signup-submit" class="btn-primary">Create Account</button>
+      </form>
+      <div class="auth-divider" id="auth-divider"><span>or</span></div>
+      <a href="/api/auth/google" id="google-btn" class="btn-google">
+        <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true">
+          <path fill="#FFC107" d="M43.6 20H24v8h11.3C33.5 33.4 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.7 1.1 7.8 2.9l5.7-5.7C34.2 6.5 29.4 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20c11 0 20-8.9 20-20 0-1.3-.1-2.7-.4-4z"/>
+          <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 15.6 18.9 12 24 12c3 0 5.7 1.1 7.8 2.9l5.7-5.7C34.2 6.5 29.4 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/>
+          <path fill="#4CAF50" d="M24 44c5.2 0 9.9-1.8 13.5-4.7l-6.2-5.3C29.3 35.6 26.7 36 24 36c-5.2 0-9.5-2.6-11.3-6.5L6 34.2C9.4 39.7 16.2 44 24 44z"/>
+          <path fill="#1976D2" d="M43.6 20H24v8h11.3c-.9 2.7-2.7 5-5.1 6.5l6.2 5.3C40.1 36.8 44 30.9 44 24c0-1.3-.1-2.7-.4-4z"/>
+        </svg>
+        Continue with Google
+      </a>
+      <button id="guest-btn" class="btn-ghost">Play as Guest →</button>
+    </div>
+  </div>
+
+  <!-- ── Username Picker ───────────────────────────────────── -->
+  <div id="username-modal" class="modal-overlay" hidden aria-modal="true" role="dialog" aria-label="Choose username">
+    <div class="modal-card">
+      <div class="modal-brand">MAP<span>TAP</span></div>
+      <div class="modal-title">Choose a Username</div>
+      <p class="modal-desc">Pick a name that will appear on the leaderboard.</p>
+      <form id="username-form" autocomplete="off">
+        <div class="form-error" id="username-error" hidden></div>
+        <label class="form-label" for="username-input">Username</label>
+        <input type="text" id="username-input" class="form-input" placeholder="3–20 chars, a-z 0-9 _" autocomplete="username" required />
+        <button type="submit" id="username-submit" class="btn-primary">Set Username</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ── History Modal ─────────────────────────────────────── -->
+  <div id="history-modal" class="modal-overlay" hidden aria-modal="true" role="dialog" aria-label="Score history">
+    <div class="modal-card modal-card--wide">
+      <div class="modal-header">
+        <div class="modal-title">Your History</div>
+        <button id="history-close" class="modal-close" aria-label="Close history">✕</button>
+      </div>
+      <div id="history-content"></div>
+    </div>
+  </div>
+
+  <!-- ── Leaderboard Modal ──────────────────────────────────── -->
+  <div id="leaderboard-modal" class="modal-overlay" hidden aria-modal="true" role="dialog" aria-label="Leaderboard">
+    <div class="modal-card modal-card--wide">
+      <div class="modal-header">
+        <div class="modal-title">Leaderboard</div>
+        <button id="leaderboard-close" class="modal-close" aria-label="Close leaderboard">✕</button>
+      </div>
+      <div class="modal-tabs" role="tablist" style="margin-bottom:0;border-bottom:1px solid var(--border);">
+        <button class="modal-tab active" data-tab="daily" role="tab">Today</button>
+        <button class="modal-tab" data-tab="alltime" role="tab">All Time</button>
+      </div>
+      <div id="leaderboard-content" style="margin-top:16px;"></div>
+    </div>
+  </div>
+
+  <!-- globe.gl via CDN — exposes window.Globe -->
+  <script src="https://unpkg.com/globe.gl"></script>
+  <script src="auth.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

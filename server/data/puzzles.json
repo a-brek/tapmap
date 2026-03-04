@@ -1,0 +1,781 @@
+[
+  {
+    "date": "2026-03-02",
+    "title": "WWII — European Theater",
+    "locations": [
+      {
+        "name": "Normandy, France",
+        "lat": 49.3691,
+        "lng": -0.7033,
+        "story": "On June 6, 1944, over 150,000 Allied troops stormed five code-named beaches in the largest seaborne invasion in history, cracking Hitler's Atlantic Wall and turning the tide of World War II.",
+        "hint": "Five beaches — Utah, Omaha, Gold, Juno, Sword — along a stretch of northern French coastline."
+      },
+      {
+        "name": "Warsaw Ghetto, Poland",
+        "lat": 52.2493,
+        "lng": 20.9908,
+        "story": "In April 1943, Jewish fighters launched an armed uprising against SS deportation forces. Outgunned and outnumbered, they held the ghetto for 28 days before the Nazis burned it block by block.",
+        "hint": "A walled district within the capital of Poland, established by the German occupation in 1940."
+      },
+      {
+        "name": "Coventry, England",
+        "lat": 52.4082,
+        "lng": -1.5106,
+        "story": "On the night of November 14, 1940, the Luftwaffe sent 500 bombers to obliterate this industrial city. The medieval cathedral was gutted, and the word 'coventrate' entered wartime vocabulary.",
+        "hint": "A Midlands city famous for its medieval cathedral, Lady Godiva legend, and wartime destruction."
+      },
+      {
+        "name": "Monte Cassino, Italy",
+        "lat": 41.4897,
+        "lng": 13.8142,
+        "story": "From January to May 1944, Allied forces fought four brutal battles to dislodge German defenders from this ancient hilltop monastery commanding the road to Rome. 55,000 Allied soldiers died.",
+        "hint": "A Benedictine monastery founded in 529 AD sits atop this mountain south of Rome."
+      },
+      {
+        "name": "El Alamein, Egypt",
+        "lat": 30.8333,
+        "lng": 28.9556,
+        "story": "In October 1942, General Montgomery launched a massive offensive against Rommel's Afrika Korps here, breaking the German advance on the Suez Canal. Churchill called it 'the end of the beginning.'",
+        "hint": "A desert railway halt 106 km west of Alexandria, now a site of war cemeteries."
+      }
+    ]
+  },
+  {
+    "date": "2026-03-03",
+    "title": "Ancient Battles",
+    "locations": [
+      {
+        "name": "Marathon, Greece",
+        "lat": 38.1517,
+        "lng": 24.0217,
+        "story": "In 490 BC, a vastly outnumbered Athenian army routed the Persian invaders on this coastal plain. The messenger Pheidippides supposedly ran 40 km to Athens to announce victory — then died.",
+        "hint": "A coastal plain northeast of Athens that lent its name to a famous long-distance race."
+      },
+      {
+        "name": "Gaugamela, Iraq",
+        "lat": 36.49,
+        "lng": 43.25,
+        "story": "In 331 BC, Alexander the Great's 47,000 Macedonians faced Darius III's vast Persian army on this open plain. Alexander's oblique cavalry charge split the Persian line, Darius fled, and the Achaemenid Empire — the largest the world had seen — collapsed within the year.",
+        "hint": "A dusty plain in what is now the Kurdistan Region of northern Iraq, near modern Erbil."
+      },
+      {
+        "name": "Red Cliffs, China",
+        "lat": 29.73,
+        "lng": 113.90,
+        "story": "In 208 AD, the warlord Cao Cao sailed 800,000 troops south to unite China under his rule. A smaller southern alliance chained Cao Cao's fleet together and sent fire ships blazing into it at night. The inferno ended his ambitions and kept China divided for 60 years.",
+        "hint": "A dramatic cliff face on the Yangtze River in Hubei province, central China."
+      },
+      {
+        "name": "Carthage, Tunisia",
+        "lat": 36.8525,
+        "lng": 10.3233,
+        "story": "In 146 BC, after a three-year siege, Roman forces under Scipio Aemilianus destroyed this Phoenician city utterly. The ground was supposedly salted so nothing would grow, ending the Third Punic War.",
+        "hint": "Ruins of this great North African trading power lie on a peninsula near modern Tunis."
+      },
+      {
+        "name": "Cannae, Italy",
+        "lat": 41.3063,
+        "lng": 16.1319,
+        "story": "On August 2, 216 BC, Hannibal encircled and annihilated 70,000 Roman soldiers in a single afternoon — the most studied tactical encirclement in military history, still taught in war colleges today.",
+        "hint": "A village in Apulia, southern Italy, near the Ofanto river."
+      }
+    ]
+  },
+  {
+    "date": "2026-03-04",
+    "title": "Age of Exploration",
+    "locations": [
+      {
+        "name": "Palos de la Frontera, Spain",
+        "lat": 37.2286,
+        "lng": -6.8936,
+        "story": "On August 3, 1492, Christopher Columbus set sail from this small Andalusian port with three ships — the Niña, Pinta, and Santa María — into the unknown Atlantic, reaching the Americas 70 days later.",
+        "hint": "A small port town on the Tinto river estuary in southwestern Spain."
+      },
+      {
+        "name": "San Salvador, Bahamas",
+        "lat": 24.0435,
+        "lng": -74.5289,
+        "story": "On October 12, 1492, Columbus made first landfall here, believing he had reached Asia. He planted the Spanish flag and named the island San Salvador, beginning the European colonization of the Americas.",
+        "hint": "A small island in the central Bahamas, historically identified as Columbus's first landfall."
+      },
+      {
+        "name": "Lisbon, Portugal",
+        "lat": 38.7223,
+        "lng": -9.1393,
+        "story": "In July 1497, Vasco da Gama departed from this city's riverside docks with four ships, sailed around Africa, and reached India — opening the first sea route linking Europe directly to Asia.",
+        "hint": "Capital of Portugal, built on seven hills at the mouth of the Tagus river."
+      },
+      {
+        "name": "Kozhikode (Calicut), India",
+        "lat": 11.2588,
+        "lng": 75.7804,
+        "story": "In May 1498, Vasco da Gama dropped anchor off this Malabar Coast city, completing the first European sea voyage to India. His cargo of spices transformed European trade routes forever.",
+        "hint": "A port city on the southwestern coast of India in the state of Kerala."
+      },
+      {
+        "name": "Cape of Good Hope, South Africa",
+        "lat": -34.3568,
+        "lng": 18.4739,
+        "story": "In 1488, Bartolomeu Dias rounded this dramatic headland in a storm, becoming the first European to sail around the southern tip of Africa and prove a sea route to the Indian Ocean was possible.",
+        "hint": "A rocky promontory at the southwestern extremity of the African continent."
+      }
+    ]
+  },
+  {
+    "date": "2026-03-05",
+    "title": "20th Century Turning Points",
+    "locations": [
+      {
+        "name": "Sarajevo, Bosnia",
+        "lat": 43.8563,
+        "lng": 18.4131,
+        "story": "On June 28, 1914, Gavrilo Princip shot Archduke Franz Ferdinand on a bridge here. The assassination set off a chain of alliances and ultimatums that dragged 30 nations into the First World War.",
+        "hint": "Capital of Bosnia-Herzegovina; the Latin Bridge where the shooting occurred is still standing."
+      },
+      {
+        "name": "Winter Palace, St. Petersburg",
+        "lat": 59.9440,
+        "lng": 30.3159,
+        "story": "On October 25, 1917, Bolshevik forces stormed this imperial palace in a near-bloodless coup. By dawn, Lenin's party controlled the Russian government and the first communist state was born.",
+        "hint": "The former residence of Russian tsars, now part of the Hermitage Museum on Palace Square."
+      },
+      {
+        "name": "Tiananmen Square, Beijing",
+        "lat": 39.9042,
+        "lng": 116.3912,
+        "story": "In May–June 1989, a million protesters occupied this vast public square demanding political reform. On June 4, the People's Liberation Army cleared the square; the death toll has never been officially released.",
+        "hint": "The largest public square in the world, at the heart of China's capital."
+      },
+      {
+        "name": "Brandenburg Gate, Berlin",
+        "lat": 52.5163,
+        "lng": 13.3777,
+        "story": "On November 9, 1989, crowds surged through checkpoints on either side of this neoclassical gate as the Berlin Wall fell. It had stood as the most potent symbol of a divided Europe for 28 years.",
+        "hint": "An 18th-century gate that stood just inside the exclusion zone along the Berlin Wall."
+      },
+      {
+        "name": "Cape Canaveral, Florida",
+        "lat": 28.3922,
+        "lng": -80.6077,
+        "story": "On July 16, 1969, Apollo 11 lifted off from Launch Complex 39A here, carrying three astronauts to the Moon. Four days later, Neil Armstrong took his 'one small step' on the lunar surface.",
+        "hint": "A barrier island on Florida's Atlantic coast, home to NASA's Kennedy Space Center."
+      }
+    ]
+  },
+  {
+    "date": "2026-03-06",
+    "title": "Disasters That Shook the World",
+    "locations": [
+      {
+        "name": "Pompeii, Italy",
+        "lat": 40.7529,
+        "lng": 14.4989,
+        "story": "On August 24, 79 AD, Mount Vesuvius erupted and buried this prosperous Roman city under six metres of ash and pumice within hours. Preserved under the volcanic fallout for 1,700 years, it is the world's best-preserved ancient city.",
+        "hint": "An excavated Roman city near the Bay of Naples, in the shadow of an active volcano."
+      },
+      {
+        "name": "Lisbon, Portugal",
+        "lat": 38.7223,
+        "lng": -9.1393,
+        "story": "On All Saints' Day 1755, a massive earthquake struck, followed by a tsunami and fires that burned for six days. The disaster killed up to 100,000 people and prompted Europe's first modern disaster-relief effort.",
+        "hint": "Portugal's capital on the Atlantic coast; rebuilt after its near-total destruction."
+      },
+      {
+        "name": "San Francisco, USA",
+        "lat": 37.7749,
+        "lng": -122.4194,
+        "story": "On April 18, 1906, a magnitude 7.9 earthquake struck, rupturing gas lines and triggering fires that burned for three days. 3,000 people died and 80% of the city was destroyed.",
+        "hint": "A California city built on hills above a bay, bisected by a famous fault line."
+      },
+      {
+        "name": "Krakatoa, Indonesia",
+        "lat": -6.1022,
+        "lng": 105.4231,
+        "story": "On August 27, 1883, this volcanic island exploded in one of the most violent eruptions in recorded history. The blast was heard 4,800 km away, and the resulting tsunami killed over 36,000 people.",
+        "hint": "A volcanic island in the Sunda Strait between Java and Sumatra."
+      },
+      {
+        "name": "Chernobyl, Ukraine",
+        "lat": 51.3890,
+        "lng": 30.0993,
+        "story": "On April 26, 1986, Reactor No. 4 at this Soviet nuclear plant exploded during a safety test, releasing 400 times more radiation than the Hiroshima bomb. The surrounding region remains an exclusion zone to this day.",
+        "hint": "A former Soviet nuclear power plant in northern Ukraine, near the Belarusian border."
+      }
+    ]
+  },
+  {
+    "date": "2026-03-07",
+    "title": "American Civil War",
+    "locations": [
+      {
+        "name": "Fort Sumter, South Carolina",
+        "lat": 32.7522,
+        "lng": -79.8748,
+        "story": "On April 12, 1861, Confederate forces opened fire on this Union garrison in Charleston Harbor, beginning the American Civil War. The fort surrendered after 34 hours of bombardment with no Union casualties.",
+        "hint": "A sea fort on a man-made island at the entrance to Charleston Harbor."
+      },
+      {
+        "name": "Gettysburg, Pennsylvania",
+        "lat": 39.8214,
+        "lng": -77.2319,
+        "story": "Over three days in July 1863, 165,000 soldiers clashed in the largest battle ever fought in North America. 51,000 casualties. Lee retreated south. It was the Confederacy's last major invasion of the North.",
+        "hint": "A small Pennsylvania town that gave its name to Lincoln's most famous speech."
+      },
+      {
+        "name": "Vicksburg, Mississippi",
+        "lat": 32.3526,
+        "lng": -90.8779,
+        "story": "In May–July 1863, Grant besieged this Confederate stronghold on the Mississippi River. When it fell on July 4, the Union controlled the entire river, splitting the Confederacy in two.",
+        "hint": "A city on high bluffs above the Mississippi River, strategically vital to both sides."
+      },
+      {
+        "name": "Appomattox Court House, Virginia",
+        "lat": 37.3640,
+        "lng": -78.7985,
+        "story": "On April 9, 1865, General Robert E. Lee surrendered the Army of Northern Virginia to Ulysses S. Grant in the parlour of a farmhouse here, effectively ending the Civil War.",
+        "hint": "A tiny village in central Virginia — a courthouse, a tavern, and the farmhouse where the war ended."
+      },
+      {
+        "name": "Antietam, Maryland",
+        "lat": 39.4766,
+        "lng": -77.7436,
+        "story": "On September 17, 1862, the bloodiest single day in American military history left 23,000 soldiers dead, wounded, or missing. Lincoln used the Union's narrow tactical victory as cover to issue the Emancipation Proclamation.",
+        "hint": "A creek and farm fields near Sharpsburg, Maryland, site of the war's bloodiest day."
+      }
+    ]
+  },
+  {
+    "date": "2026-03-08",
+    "title": "Empires of Asia",
+    "locations": [
+      {
+        "name": "Angkor Wat, Cambodia",
+        "lat": 13.4125,
+        "lng": 103.8670,
+        "story": "Built in the 12th century by King Suryavarman II, this temple complex was the heart of the Khmer Empire and the largest religious monument ever constructed — covering 402 acres and home to over 1 million people.",
+        "hint": "The largest religious monument in the world, its silhouette appears on the Cambodian national flag."
+      },
+      {
+        "name": "Badaling Great Wall, China",
+        "lat": 40.3544,
+        "lng": 116.0199,
+        "story": "Construction of this defensive barrier began in the 7th century BC and continued for 2,000 years. At its greatest extent it stretched 21,196 km, protecting Chinese dynasties from nomadic incursions from the north.",
+        "hint": "The most visited section of China's ancient northern border fortification, northwest of Beijing."
+      },
+      {
+        "name": "Red Fort, Delhi, India",
+        "lat": 28.6562,
+        "lng": 77.2410,
+        "story": "Built by Shah Jahan in 1648 as the palace of the Mughal capital, this red sandstone fortress was the seat of Mughal power for nearly 200 years until the British Empire's suppression of the 1857 uprising.",
+        "hint": "A massive red sandstone citadel on the banks of the Yamuna River in Old Delhi."
+      },
+      {
+        "name": "Kyoto, Japan",
+        "lat": 35.0116,
+        "lng": 135.7681,
+        "story": "Japan's imperial capital for over 1,000 years, from 794 to 1869. The city's 1,600 Buddhist temples and 400 Shinto shrines made it the cultural heart of Japan, and it was deliberately spared from atomic bombing in 1945.",
+        "hint": "Japan's ancient capital, situated in a basin surrounded by mountains in the Kansai region."
+      },
+      {
+        "name": "Nanjing, China",
+        "lat": 32.0603,
+        "lng": 118.7969,
+        "story": "In December 1937, Japanese forces captured this city and carried out six weeks of systematic killing and assault. An estimated 200,000 to 300,000 Chinese civilians and prisoners of war were killed in what became known as the Nanjing Massacre.",
+        "hint": "A city on the Yangtze River that served as China's capital during the Republic era."
+      }
+    ]
+  },
+  {
+    "date": "2026-03-09",
+    "title": "African History",
+    "locations": [
+      {
+        "name": "Great Zimbabwe",
+        "lat": -20.2672,
+        "lng": 30.9337,
+        "story": "Between the 11th and 15th centuries, this stone-walled city was the capital of a powerful Shona kingdom controlling the gold trade between central Africa and the Indian Ocean coast. Its massive granite walls were built without mortar.",
+        "hint": "The ruins of a medieval stone city in southern Africa — the country's name and capital were taken from it."
+      },
+      {
+        "name": "Timbuktu, Mali",
+        "lat": 16.7666,
+        "lng": -3.0026,
+        "story": "At its 15th–16th century peak, this city at the edge of the Sahara was home to 25,000 students and housed one of the most important Islamic universities in the world, holding 700,000 manuscripts.",
+        "hint": "A Saharan city in Mali, near a bend in the Niger River — a proverbial byword for remoteness."
+      },
+      {
+        "name": "Cape Town, South Africa",
+        "lat": -33.9249,
+        "lng": 18.4241,
+        "story": "In 1652, Jan van Riebeeck of the Dutch East India Company established a refreshment station here for passing ships. This small outpost grew into the first permanent European settlement in sub-Saharan Africa.",
+        "hint": "A city at the southwestern tip of Africa, beneath a famous flat-topped mountain."
+      },
+      {
+        "name": "Adwa, Ethiopia",
+        "lat": 14.1667,
+        "lng": 38.9000,
+        "story": "On March 1, 1896, Emperor Menelik II's Ethiopian army decisively defeated an invading Italian force here — the first major African victory over a European colonial power, preserving Ethiopia's independence.",
+        "hint": "A small town in the Tigray region of northern Ethiopia."
+      },
+      {
+        "name": "Algiers, Algeria",
+        "lat": 36.7372,
+        "lng": 3.0868,
+        "story": "From 1954 to 1962, Algeria fought one of the most brutal wars of independence in the 20th century against French colonial rule. This coastal capital city was the center of both the resistance and the French counterinsurgency.",
+        "hint": "Capital of Algeria, built on the slopes above a bay on the Mediterranean coast."
+      }
+    ]
+  },
+  {
+    "date": "2026-03-10",
+    "title": "WWI Battlefields",
+    "locations": [
+      {
+        "name": "Verdun, France",
+        "lat": 49.1600,
+        "lng": 5.3833,
+        "story": "From February to December 1916, French and German armies fought the longest battle of WWI here. Nearly 700,000 soldiers died or were wounded in ten months of fighting for a few miles of churned mud.",
+        "hint": "A fortified city on the Meuse River in northeastern France, ringed by underground forts."
+      },
+      {
+        "name": "Beersheba, Israel",
+        "lat": 31.2530,
+        "lng": 34.7915,
+        "story": "On October 31, 1917, Australian Light Horse staged one of the last great cavalry charges in history, riding four miles under fire to capture the wells of this desert town. Without water, the entire Palestine campaign would have stalled.",
+        "hint": "A city at the northern edge of the Negev Desert — the southernmost major city in Israel."
+      },
+      {
+        "name": "Gallipoli, Turkey",
+        "lat": 40.2067,
+        "lng": 26.2667,
+        "story": "In April 1915, Allied forces attempted to seize the Dardanelles strait and capture Istanbul. Eight months of catastrophic fighting followed. 130,000 soldiers died. For Australia and New Zealand, Gallipoli became a defining national tragedy.",
+        "hint": "A narrow peninsula in northwestern Turkey separating the Dardanelles from the Aegean."
+      },
+      {
+        "name": "Ypres (Ieper), Belgium",
+        "lat": 50.8503,
+        "lng": 2.8752,
+        "story": "This Flemish town was fought over three times between 1914 and 1918 — three separate battles, each name synonymous with industrial slaughter. Passchendaele, the third battle, cost 600,000 casualties for five miles of mud.",
+        "hint": "A medieval cloth-town in West Flanders, Belgium, almost completely destroyed and rebuilt."
+      },
+      {
+        "name": "Stębark (Tannenberg), Poland",
+        "lat": 53.6000,
+        "lng": 20.3500,
+        "story": "In August 1914, German forces under Hindenburg and Ludendorff encircled and destroyed the Russian Second Army here in one of WWI's greatest encirclements. 92,000 Russians surrendered; their commander shot himself.",
+        "hint": "A village in the Masuria lake district of northeastern Poland, near Olsztyn."
+      }
+    ]
+  },
+  {
+    "date": "2026-03-11",
+    "title": "Cold War Flash Points",
+    "locations": [
+      {
+        "name": "Bay of Pigs, Cuba",
+        "lat": 22.0645,
+        "lng": -80.9823,
+        "story": "On April 17, 1961, a CIA-trained force of Cuban exiles landed here hoping to overthrow Castro. Within 72 hours the invasion had collapsed completely, humiliating the Kennedy administration and pushing Cuba closer to the Soviet Union.",
+        "hint": "A bay on the southern coast of Cuba, named for the local wild pigs."
+      },
+      {
+        "name": "Baikonur, Kazakhstan",
+        "lat": 45.9200,
+        "lng": 63.3420,
+        "story": "On October 4, 1957, the Soviet Union launched Sputnik from this remote steppe launch site — the first artificial satellite to orbit Earth. The launch triggered the Space Race and a massive American investment in science and technology.",
+        "hint": "A Soviet-era cosmodrome in the Kazakhstan steppe, still used by Russia today."
+      },
+      {
+        "name": "Checkpoint Charlie, Berlin",
+        "lat": 52.5075,
+        "lng": 13.3904,
+        "story": "In October 1961, Soviet and American tanks faced each other here for 16 hours in the most direct military confrontation of the Cold War. This crossing point became the most famous symbol of the divided world.",
+        "hint": "The best-known crossing point of the Berlin Wall, on Friedrichstrasse."
+      },
+      {
+        "name": "Panmunjom, Korea",
+        "lat": 37.9572,
+        "lng": 126.6831,
+        "story": "On July 27, 1953, the Korean War Armistice was signed at this border village, freezing the two Koreas in a ceasefire that technically never ended. The 38th parallel here remains the most heavily militarized border on Earth.",
+        "hint": "A truce village straddling the demilitarized zone between North and South Korea."
+      },
+      {
+        "name": "Havana, Cuba",
+        "lat": 23.1136,
+        "lng": -82.3666,
+        "story": "In October 1962, US spy planes discovered Soviet nuclear missile sites being built here. For 13 days, Kennedy and Khrushchev stared each other down in the closest the world has come to nuclear war.",
+        "hint": "Capital of Cuba and the largest city in the Caribbean."
+      }
+    ]
+  },
+  {
+    "date": "2026-03-12",
+    "title": "Medieval Battles",
+    "locations": [
+      {
+        "name": "Azincourt, France",
+        "lat": 50.4606,
+        "lng": 2.1436,
+        "story": "On October 25, 1415, Henry V's exhausted, outnumbered English army defeated a much larger French force here. English longbowmen cut down wave after wave of armoured French knights in a muddy field — later immortalized by Shakespeare.",
+        "hint": "A small village in the Pas-de-Calais region of northern France."
+      },
+      {
+        "name": "Hastings, England",
+        "lat": 50.9137,
+        "lng": 0.5883,
+        "story": "On October 14, 1066, William the Conqueror's Norman army defeated King Harold II here. Harold was killed — legend says by an arrow through the eye — and England was transformed by French-Norman culture forever.",
+        "hint": "A coastal town in East Sussex where the Normans landed and won the battle that changed England."
+      },
+      {
+        "name": "Ain Jalut, Israel",
+        "lat": 32.5500,
+        "lng": 35.3667,
+        "story": "On September 3, 1260, the Egyptian Mamluks met the Mongol army at this spring in the Jezreel Valley and defeated them — the first time the seemingly unstoppable Mongol expansion had ever been halted in open battle. It saved North Africa and the Arab world.",
+        "hint": "A spring in the Jezreel Valley in northern Israel, near the town of Beit She'an."
+      },
+      {
+        "name": "Tours, France",
+        "lat": 47.3941,
+        "lng": 0.6848,
+        "story": "In October 732 AD, Charles Martel's Frankish army halted the northernmost Muslim advance into Europe near this city. Historians debate its significance, but it is often cited as the battle that 'saved Christian Europe.'",
+        "hint": "A city on the Loire River in France, between two rivers, a historic gateway to the west."
+      },
+      {
+        "name": "Constantinople (Istanbul), Turkey",
+        "lat": 41.0082,
+        "lng": 28.9784,
+        "story": "On May 29, 1453, Ottoman Sultan Mehmed II's cannons breached these ancient walls after a 53-day siege, ending the Byzantine Empire after 1,100 years. The fall marked the end of the Middle Ages for many historians.",
+        "hint": "A city straddling Europe and Asia, now Turkey's largest city and cultural capital."
+      }
+    ]
+  },
+  {
+    "date": "2026-03-13",
+    "title": "Naval History",
+    "locations": [
+      {
+        "name": "Cape Trafalgar, Spain",
+        "lat": 36.1667,
+        "lng": -6.0400,
+        "story": "On October 21, 1805, Admiral Horatio Nelson shattered the combined Franco-Spanish fleet off this headland, cementing British naval supremacy for a century. Nelson was killed during the battle by a French sniper.",
+        "hint": "A rocky cape on the Atlantic coast of southern Spain, the western terminus of the Strait of Gibraltar."
+      },
+      {
+        "name": "Lepanto, Greece",
+        "lat": 38.3800,
+        "lng": 21.8283,
+        "story": "On October 7, 1571, the Holy League's fleet met the Ottoman navy off this gulf. The Christian fleet destroyed 210 Ottoman ships in the largest naval battle of the 16th century, halting Ottoman expansion into the western Mediterranean.",
+        "hint": "A small port at the entrance to the Gulf of Corinth in western Greece."
+      },
+      {
+        "name": "Midway Atoll",
+        "lat": 28.2070,
+        "lng": -177.3735,
+        "story": "In June 1942, US naval intelligence decoded Japanese plans and ambushed their carrier fleet here. Four Japanese fleet carriers were sunk in minutes; the battle permanently shifted naval power in the Pacific to the United States.",
+        "hint": "A remote atoll halfway between North America and Asia in the North Pacific Ocean."
+      },
+      {
+        "name": "Pearl Harbor, Hawaii",
+        "lat": 21.3650,
+        "lng": -157.9500,
+        "story": "On December 7, 1941, Japanese carrier aircraft attacked the US Pacific Fleet anchored here in a surprise strike, killing 2,403 Americans and sinking or damaging 19 ships. The US declared war the following day.",
+        "hint": "A lagoon harbor on the island of Oahu, home to a major US naval base."
+      },
+      {
+        "name": "Tsushima Strait, Japan",
+        "lat": 34.5000,
+        "lng": 129.3333,
+        "story": "In May 1905, Japan's Admiral Togo annihilated the Russian Baltic Fleet here after its 18,000-mile voyage from Europe. The crushing defeat shocked the world — an Asian nation had defeated a European great power at sea.",
+        "hint": "A strait between Japan's Tsushima Island and the Korean peninsula."
+      }
+    ]
+  },
+  {
+    "date": "2026-03-14",
+    "title": "Space Race",
+    "locations": [
+      {
+        "name": "Baikonur Cosmodrome, Kazakhstan",
+        "lat": 45.9200,
+        "lng": 63.3420,
+        "story": "On April 12, 1961, Yuri Gagarin lifted off from Pad No. 1 here aboard Vostok 1, becoming the first human to orbit Earth. He completed one orbit in 108 minutes and returned safely — the single greatest achievement of the Space Age.",
+        "hint": "The world's first and largest space launch facility, in the Kazakhstan steppe."
+      },
+      {
+        "name": "Cape Canaveral, Florida",
+        "lat": 28.3922,
+        "lng": -80.6077,
+        "story": "On February 20, 1962, John Glenn became the first American to orbit Earth, launching from this Florida launch complex aboard Friendship 7. His three orbits restored American confidence in the Space Race.",
+        "hint": "A barrier island on Florida's Atlantic coast; home to NASA's launch pads since 1950."
+      },
+      {
+        "name": "Star City, Russia",
+        "lat": 55.9333,
+        "lng": 38.0333,
+        "story": "Built secretly in the early 1960s, this closed military town northeast of Moscow was where all Soviet cosmonauts trained. Gagarin lived and worked here; his house and office remain preserved as a shrine.",
+        "hint": "A closed scientific township (Zvyozdny Gorodok) in the Moscow region, home to Russia's cosmonaut training centre."
+      },
+      {
+        "name": "Vandenberg Space Force Base, California",
+        "lat": 34.7420,
+        "lng": -120.5724,
+        "story": "The US's primary west-coast launch facility, used since 1958 for polar and sun-synchronous orbits. During the Cold War, dozens of reconnaissance satellites were secretly launched from here to spy on the Soviet Union.",
+        "hint": "A military installation on the California coast north of Santa Barbara, overlooking the Pacific."
+      },
+      {
+        "name": "Woomera, Australia",
+        "lat": -31.1558,
+        "lng": 136.8014,
+        "story": "In the 1950s and 60s, Britain conducted rocket and missile tests at this remote South Australian base, and in 1967 Australia became only the third country to independently launch a satellite — the WRESAT — from here.",
+        "hint": "A remote outback town in South Australia, its name an Aboriginal word for a spear-throwing device."
+      }
+    ]
+  },
+  {
+    "date": "2026-03-15",
+    "title": "Ancient Wonders",
+    "locations": [
+      {
+        "name": "Giza Plateau, Egypt",
+        "lat": 29.9792,
+        "lng": 31.1342,
+        "story": "Built around 2560 BC for Pharaoh Khufu, the Great Pyramid stood as the world's tallest man-made structure for 3,800 years. Built by tens of thousands of workers over 20 years, how they did it remains partially debated.",
+        "hint": "Three colossal pyramids and a Sphinx on a plateau near Cairo, at the edge of the Sahara."
+      },
+      {
+        "name": "Ephesus, Turkey",
+        "lat": 37.9395,
+        "lng": 27.3408,
+        "story": "The Temple of Artemis at this ancient Greek city was four times the size of the Parthenon. One of the Seven Wonders of the Ancient World, it was burned by a man seeking immortality and destroyed by the Goths in 268 AD.",
+        "hint": "An ancient Greek city on Turkey's Aegean coast, whose ruins include a remarkably preserved library facade."
+      },
+      {
+        "name": "Babylon, Iraq",
+        "lat": 32.5425,
+        "lng": 44.4213,
+        "story": "Capital of the ancient world under Nebuchadnezzar II, this city on the Euphrates supposedly held the legendary Hanging Gardens — one of the Seven Wonders. Alexander the Great died here in 323 BC.",
+        "hint": "Ruins of one of antiquity's greatest cities, 85 km south of modern Baghdad in Iraq."
+      },
+      {
+        "name": "Olympia, Greece",
+        "lat": 37.6385,
+        "lng": 21.6300,
+        "story": "Home to the original Olympic Games, held every four years from 776 BC for over a millennium. The colossal statue of Zeus that once stood in its temple was one of the Seven Wonders of the Ancient World.",
+        "hint": "A sanctuary in the western Peloponnese, Greece, where the ancient Olympic Games were held."
+      },
+      {
+        "name": "Halicarnassus (Bodrum), Turkey",
+        "lat": 37.0380,
+        "lng": 27.4241,
+        "story": "Around 350 BC, Mausolus of Caria built his own tomb here so grand that his name entered the language — every 'mausoleum' in the world is named after him. One of the Seven Wonders of the Ancient World, it stood for 1,800 years before being stripped for castle walls.",
+        "hint": "A coastal city on Turkey's Aegean shore, now a popular resort town known for its crusader castle and marina."
+      }
+    ]
+  },
+  {
+    "date": "2026-03-16",
+    "title": "Age of Revolution",
+    "locations": [
+      {
+        "name": "Place de la Bastille, Paris",
+        "lat": 48.8533,
+        "lng": 2.3692,
+        "story": "On July 14, 1789, a Parisian mob stormed this royal prison-fortress, releasing its seven prisoners and seizing its gunpowder. The date became France's national holiday — the symbolic birth of the French Revolution.",
+        "hint": "A square in eastern Paris where the infamous prison once stood; the July Column now marks the spot."
+      },
+      {
+        "name": "Independence Hall, Philadelphia",
+        "lat": 39.9489,
+        "lng": -75.1500,
+        "story": "On July 4, 1776, the Second Continental Congress adopted the Declaration of Independence here, and in 1787 the Constitution was drafted in the same hall. The building is considered the birthplace of the United States.",
+        "hint": "A Georgian-style brick building in Philadelphia where the Declaration and Constitution were signed."
+      },
+      {
+        "name": "Havana, Cuba",
+        "lat": 23.1136,
+        "lng": -82.3666,
+        "story": "On January 1, 1959, Fidel Castro's rebel army marched into this capital city after Batista fled in the night. The Cuban Revolution established the Western Hemisphere's only communist state 145 km from Florida.",
+        "hint": "The capital and largest city of Cuba, on the northern coast of the island."
+      },
+      {
+        "name": "Smolny Institute, St. Petersburg",
+        "lat": 59.9489,
+        "lng": 30.3950,
+        "story": "In October 1917, Lenin directed the Bolshevik Revolution from this neoclassical building, a former school for aristocratic girls. For a brief period it was the headquarters of the new Soviet government.",
+        "hint": "A neoclassical building in St. Petersburg on the Neva River, now the city governor's residence."
+      },
+      {
+        "name": "Versailles, France",
+        "lat": 48.8049,
+        "lng": 2.1204,
+        "story": "On June 28, 1919, the Treaty of Versailles was signed in the Hall of Mirrors here, formally ending World War I. Its punishing terms on Germany — reparations, territorial losses, war guilt — are often cited as a cause of World War II.",
+        "hint": "A royal palace and formal gardens 17 km southwest of Paris, built for Louis XIV."
+      }
+    ]
+  },
+  {
+    "date": "2026-03-17",
+    "title": "Pacific War",
+    "locations": [
+      {
+        "name": "Pearl Harbor, Hawaii",
+        "lat": 21.3650,
+        "lng": -157.9500,
+        "story": "On December 7, 1941, 353 Japanese aircraft attacked the US Pacific Fleet in two waves. Eight battleships were damaged or sunk, 2,403 Americans killed. 'A date which will live in infamy.' The US entered WWII the next day.",
+        "hint": "A naval base on the southern shore of Oahu, Hawaii."
+      },
+      {
+        "name": "Midway Atoll",
+        "lat": 28.2070,
+        "lng": -177.3735,
+        "story": "In June 1942, US cryptanalysts decoded Japanese plans, and dive-bombers sank four Japanese aircraft carriers in minutes. The battle turned the tide of the Pacific War permanently in America's favor.",
+        "hint": "A remote coral atoll in the North Pacific, roughly equidistant from Asia and North America."
+      },
+      {
+        "name": "Guadalcanal, Solomon Islands",
+        "lat": -9.4333,
+        "lng": 160.0333,
+        "story": "From August 1942 to February 1943, US Marines and the Japanese Army fought a grueling six-month campaign in fetid jungle heat for this island. It was the first major Allied offensive in the Pacific and a turning point in the island-hopping campaign.",
+        "hint": "The largest island in the Solomon Islands archipelago in the southwestern Pacific."
+      },
+      {
+        "name": "Iwo Jima, Japan",
+        "lat": 24.7858,
+        "lng": 141.3194,
+        "story": "In February–March 1945, Marines fought for 36 days to take this volcanic island, needed as a base for bombing raids on Japan. 26,000 Americans were casualties; nearly all 22,000 Japanese defenders died. The flag-raising photo became iconic.",
+        "hint": "A small volcanic island 1,200 km south of Tokyo, now officially named Iwo To."
+      },
+      {
+        "name": "Hiroshima, Japan",
+        "lat": 34.3853,
+        "lng": 132.4553,
+        "story": "On August 6, 1945, the B-29 Enola Gay dropped 'Little Boy' on this city. The explosion instantly killed an estimated 70,000–80,000 people; tens of thousands more died from radiation in the following months. Three days later, Nagasaki.",
+        "hint": "A city on the Ōta River delta in western Honshu, Japan, with the Peace Memorial at its center."
+      }
+    ]
+  },
+  {
+    "date": "2026-03-18",
+    "title": "Ancient Americas",
+    "locations": [
+      {
+        "name": "Tenochtitlan (Mexico City), Mexico",
+        "lat": 19.4326,
+        "lng": -99.1332,
+        "story": "Founded in 1325 on an island in Lake Texcoco, the Aztec capital had a population of 200,000 by 1500 — larger than any European city. In 1521, Hernán Cortés and his indigenous allies destroyed it. Mexico City was built on its ruins.",
+        "hint": "The Zócalo of Mexico City sits atop the ruins of the Aztec empire's great central plaza."
+      },
+      {
+        "name": "Machu Picchu, Peru",
+        "lat": -13.1631,
+        "lng": -72.5450,
+        "story": "Built around 1450 at the height of the Inca Empire, this mountaintop citadel was abandoned just over a century later, possibly due to a smallpox epidemic. It was 'rediscovered' by Hiram Bingham in 1911 and is now the most visited site in South America.",
+        "hint": "A 15th-century Inca citadel set high in the Andes Mountains of Peru, above the Urubamba river gorge."
+      },
+      {
+        "name": "Cusco, Peru",
+        "lat": -13.5319,
+        "lng": -71.9675,
+        "story": "For centuries, this high-altitude city was the navel of the Inca universe — capital of an empire that stretched 4,000 km along the Andes. In 1533, Francisco Pizarro captured and executed the Inca emperor Atahualpa and seized the city.",
+        "hint": "A city in the Andes at 3,400 metres elevation, former capital of the Inca Empire."
+      },
+      {
+        "name": "Chichén Itzá, Mexico",
+        "lat": 20.6843,
+        "lng": -88.5678,
+        "story": "One of the largest Maya cities, flourishing between 600 and 1200 AD, it contains El Castillo — a pyramid precisely aligned so that at each equinox, shadows create the illusion of a serpent descending the staircase.",
+        "hint": "A pre-Columbian Maya city in the Yucatán Peninsula of Mexico, a UNESCO World Heritage Site."
+      },
+      {
+        "name": "Easter Island (Rapa Nui)",
+        "lat": -27.1228,
+        "lng": -109.2773,
+        "story": "Between 1250 and 1500 AD, the Rapa Nui people carved and transported 1,000 massive stone statues (moai) across this isolated island. Why the civilization collapsed before European contact in 1722 remains debated — overpopulation, ecological collapse, or war.",
+        "hint": "A remote Polynesian island in the South Pacific, 3,500 km west of Chile, famous for its stone figures."
+      }
+    ]
+  },
+  {
+    "date": "2026-03-19",
+    "title": "The British Empire",
+    "locations": [
+      {
+        "name": "Tower of London, England",
+        "lat": 51.5081,
+        "lng": -0.0759,
+        "story": "Built by William the Conqueror in 1078, this fortress has served as a royal palace, prison, execution site, and treasury. Anne Boleyn, Thomas More, and Lady Jane Grey were all executed here.",
+        "hint": "A medieval castle on the north bank of the Thames, in the City of London."
+      },
+      {
+        "name": "Kolkata (Calcutta), India",
+        "lat": 22.5726,
+        "lng": 88.3639,
+        "story": "Founded by the British East India Company in 1690, this city was the capital of British India for 138 years. The 'Black Hole of Calcutta' in 1756 — where 146 British prisoners reportedly suffocated overnight — became an imperial rallying cry.",
+        "hint": "A megacity on the Hooghly River in West Bengal, eastern India, once the British colonial capital."
+      },
+      {
+        "name": "Cape Town, South Africa",
+        "lat": -33.9249,
+        "lng": 18.4241,
+        "story": "Britain seized this strategic port from the Dutch Batavian Republic during the Napoleonic Wars and formalized control in 1806. It became the gateway to Britain's African empire and the site of Robben Island, where Nelson Mandela was imprisoned.",
+        "hint": "A port city at Africa's southwestern tip, beneath a famous flat-topped mountain."
+      },
+      {
+        "name": "Hong Kong, China",
+        "lat": 22.2793,
+        "lng": 114.1628,
+        "story": "Ceded to Britain after the First Opium War in 1842, this island became one of the world's great entrepôts. Britain held it for 155 years — through Japanese occupation — before returning it to China on July 1, 1997.",
+        "hint": "A Special Administrative Region of China on the Pearl River Delta, formerly a British colony."
+      },
+      {
+        "name": "Sydney Cove, Australia",
+        "lat": -33.8688,
+        "lng": 151.2093,
+        "story": "On January 26, 1788, Captain Arthur Phillip raised the British flag here as 1,500 convicts and marines arrived with the First Fleet, founding the penal colony of New South Wales. The date is still Australia's national day.",
+        "hint": "The cove where the First Fleet anchored, now the site of the Sydney Opera House and Harbour Bridge."
+      }
+    ]
+  },
+  {
+    "date": "2026-03-20",
+    "title": "Ottoman Empire",
+    "locations": [
+      {
+        "name": "Topkapı Palace, Istanbul",
+        "lat": 41.0136,
+        "lng": 28.9830,
+        "story": "From 1465 to 1853, this sprawling palace complex was the administrative heart of the Ottoman Empire — home to the sultans, their harems, and the treasury holding the Spoonmaker's Diamond and the Sword of Suleiman.",
+        "hint": "A palace at the tip of a peninsula overlooking both the Bosphorus and the Golden Horn in Istanbul."
+      },
+      {
+        "name": "Vienna, Austria",
+        "lat": 48.2082,
+        "lng": 16.3738,
+        "story": "In September 1683, 140,000 Ottoman troops under Grand Vizier Kara Mustafa besieged this Habsburg capital for two months. A relief army of Polish and German forces broke the siege — the Ottoman Empire never again threatened central Europe.",
+        "hint": "The capital of Austria on the Danube, once the eastern frontier of Christian Europe."
+      },
+      {
+        "name": "Kosovo Polje, Kosovo",
+        "lat": 42.6575,
+        "lng": 21.1647,
+        "story": "On June 28, 1389, Ottoman forces crushed the Serbian medieval state on this field. Both the Serbian prince and the Ottoman sultan died. The battle remains a foundational myth of Serbian national identity — Slobodan Milošević invoked it in 1989.",
+        "hint": "A plain near Pristina in Kosovo — its name means 'Field of Blackbirds' in Serbian."
+      },
+      {
+        "name": "Jerusalem",
+        "lat": 31.7781,
+        "lng": 35.2355,
+        "story": "Suleiman the Magnificent rebuilt the walls of this city between 1537 and 1541, the walls that still stand today. His 46-year reign was the Ottoman golden age — the empire stretched from Algeria to Baghdad, from Vienna to Yemen.",
+        "hint": "A city sacred to three Abrahamic faiths, whose Old City walls were rebuilt by a 16th-century Ottoman sultan."
+      },
+      {
+        "name": "Gallipoli, Turkey",
+        "lat": 40.2067,
+        "lng": 26.4143,
+        "story": "In 1915, as WWI raged, the Gallipoli peninsula was the last act of the dying Ottoman Empire's military significance. Mustafa Kemal rose to fame defending these shores. Five years later, the empire was abolished and he became Atatürk.",
+        "hint": "A peninsula in northwestern Turkey, controlling the narrow Dardanelles strait to the Black Sea."
+      }
+    ]
+  }
+]

@@ -1,0 +1,155 @@
+'use strict';
+
+require('dotenv').config();
+
+const express     = require('express');
+const cors        = require('cors');
+const helmet      = require('helmet');
+const compression = require('compression');
+const session     = require('express-session');
+const pgSession   = require('connect-pg-simple')(session);
+const passport    = require('passport');
+const { Strategy: LocalStrategy }  = require('passport-local');
+const { Strategy: GoogleStrategy } = require('passport-google-oauth20');
+const bcrypt      = require('bcryptjs');
+const path        = require('path');
+
+const db              = require('./db');
+const puzzleRoutes    = require('./routes/puzzle');
+const authRoutes      = require('./routes/auth');
+const userRoutes      = require('./routes/user');
+const leaderboardRoutes = require('./routes/leaderboard');
+const analyticsRoutes   = require('./routes/analytics');
+
+const app  = express();
+const PORT = process.env.PORT || 3001;
+
+// ── Security & Performance ────────────────────────────────
+app.use(helmet({ contentSecurityPolicy: false }));
+app.use(cors({ origin: true, credentials: true }));
+app.use(compression());
+app.use(express.json());
+
+// ── Sessions ──────────────────────────────────────────────
+app.use(session({
+  store: new pgSession({
+    conString: process.env.DATABASE_URL,
+    tableName: 'session',
+    createTableIfMissing: true,
+  }),
+  secret:            process.env.SESSION_SECRET || 'maptap-dev-secret-change-in-production',
+  resave:            false,
+  saveUninitialized: false,
+  cookie: {
+    httpOnly: true,
+    secure:   process.env.NODE_ENV === 'production',
+    maxAge:   30 * 24 * 60 * 60 * 1000,
+  },
+}));
+
+// ── Passport ──────────────────────────────────────────────
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Local strategy — email + password
+passport.use(new LocalStrategy(
+  { usernameField: 'email' },
+  async (email, password, done) => {
+    try {
+      const { rows } = await db.query(
+        'SELECT * FROM users WHERE email = $1',
+        [email.toLowerCase().trim()]
+      );
+      const user = rows[0];
+      if (!user)               return done(null, false, { message: 'Invalid email or password' });
+      if (!user.password_hash) return done(null, false, { message: 'This account uses Google sign-in' });
+      const ok = await bcrypt.compare(password, user.password_hash);
+      if (!ok)                 return done(null, false, { message: 'Invalid email or password' });
+      return done(null, user);
+    } catch (err) {
+      return done(err);
+    }
+  }
+));
+
+// Google OAuth — only registered when credentials are provided
+if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
+  passport.use(new GoogleStrategy(
+    {
+      clientID:     process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL:  process.env.GOOGLE_CALLBACK_URL
+        || `http://localhost:${PORT}/api/auth/google/callback`,
+    },
+    async (_accessToken, _refreshToken, profile, done) => {
+      try {
+        const email     = profile.emails?.[0]?.value?.toLowerCase();
+        const googleId  = profile.id;
+        const avatarUrl = profile.photos?.[0]?.value;
+
+        let user;
+        const byGoogle = await db.query('SELECT * FROM users WHERE google_id = $1', [googleId]);
+        user = byGoogle.rows[0];
+
+        if (!user && email) {
+          const byEmail = await db.query('SELECT * FROM users WHERE email = $1', [email]);
+          user = byEmail.rows[0];
+        }
+
+        if (user) {
+          await db.query(
+            'UPDATE users SET google_id = $1, avatar_url = $2 WHERE id = $3',
+            [googleId, avatarUrl, user.id]
+          );
+          return done(null, { ...user, google_id: googleId, avatar_url: avatarUrl });
+        }
+
+        // Brand-new Google user — username set later
+        const result = await db.query(
+          'INSERT INTO users (email, google_id, avatar_url) VALUES ($1, $2, $3) RETURNING *',
+          [email, googleId, avatarUrl]
+        );
+        return done(null, result.rows[0]);
+      } catch (err) {
+        return done(err);
+      }
+    }
+  ));
+}
+
+passport.serializeUser((user, done) => done(null, user.id));
+passport.deserializeUser(async (id, done) => {
+  try {
+    const { rows } = await db.query('SELECT * FROM users WHERE id = $1', [id]);
+    done(null, rows[0] ?? null);
+  } catch (err) {
+    done(err);
+  }
+});
+
+// ── Request Logger ────────────────────────────────────────
+app.use((req, _res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
+  next();
+});
+
+// ── API Routes ────────────────────────────────────────────
+app.use('/api/puzzle',      puzzleRoutes);
+app.use('/api/auth',        authRoutes);
+app.use('/api/user',        userRoutes);
+app.use('/api/leaderboard', leaderboardRoutes);
+app.use('/api/analytics',   analyticsRoutes);
+
+// ── Serve Client ──────────────────────────────────────────
+app.use(express.static(path.join(__dirname, '../client')));
+app.get('*', (_req, res) => res.sendFile(path.join(__dirname, '../client/index.html')));
+
+// ── Global Error Handler ──────────────────────────────────
+app.use((err, _req, res, _next) => {
+  console.error(err.stack);
+  res.status(err.status || 500).json({ error: err.message || 'Internal Server Error' });
+});
+
+app.listen(PORT, () => {
+  console.log(`\n  🌍  MapTap running at http://localhost:${PORT}\n`);
+});
