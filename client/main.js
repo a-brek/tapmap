@@ -191,77 +191,89 @@ function startUfoOrbit() {
   requestAnimationFrame(tick);
 }
 
-// ── 3D Mushroom Cloud ──────────────────────────────────────
-// Built with Three.js geometry — no external model file needed.
-// Globe radius in globe.gl's Three.js scene is ~100 units.
-function createMushroomCloud() {
-  const group = new THREE.Group();
 
-  const smokeMat = new THREE.MeshStandardMaterial({
-    color: 0x887766, roughness: 1, transparent: true, opacity: 0.88,
-  });
-  const fireMat = new THREE.MeshStandardMaterial({
-    color: 0xff5500, emissive: 0xff2200, emissiveIntensity: 0.45,
-    roughness: 0.8, transparent: true, opacity: 0.92,
-  });
+// ── Iran–Israel Missile Conflict ──────────────────────────
+const _IRAN   = { lat: 32.4, lng: 53.7 };
+const _ISRAEL = { lat: 31.7, lng: 35.2 };
 
-  // Blast ring (lies flat on the surface)
-  const blastRing = new THREE.Mesh(
-    new THREE.TorusGeometry(3.5, 0.65, 8, 32),
-    new THREE.MeshStandardMaterial({
-      color: 0xff6600, emissive: 0xff4400, emissiveIntensity: 0.9,
-      transparent: true, opacity: 0.65,
-    })
-  );
-  blastRing.rotation.x = Math.PI / 2;
-  blastRing.position.y = 0.4;
-  group.add(blastRing);
-
-  // Stem (narrow at top, wider at base)
-  const stem = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.7, 2.2, 10, 14),
-    smokeMat
-  );
-  stem.position.y = 5;
-  group.add(stem);
-
-  // Inner fireball
-  const fireball = new THREE.Mesh(new THREE.SphereGeometry(3, 16, 12), fireMat);
-  fireball.scale.y = 0.55;
-  fireball.position.y = 10.5;
-  group.add(fireball);
-
-  // Main mushroom cap
-  const cap = new THREE.Mesh(new THREE.SphereGeometry(5, 20, 14), smokeMat);
-  cap.scale.y = 0.42;
-  cap.position.y = 12.5;
-  group.add(cap);
-
-  // Anvil top (wide flat cloud spreading at the top)
-  const anvil = new THREE.Mesh(
-    new THREE.SphereGeometry(6.5, 20, 10),
-    new THREE.MeshStandardMaterial({
-      color: 0xccbbaa, roughness: 1, transparent: true, opacity: 0.72,
-    })
-  );
-  anvil.scale.y = 0.19;
-  anvil.position.y = 14.5;
-  group.add(anvil);
-
-  return group;
+function _scatter(center, spread) {
+  return center + (Math.random() - 0.5) * spread;
 }
 
-// Place a 3D mushroom cloud on the globe at the given lat/lng.
-// Must be called after initGlobe().
-function placeMushroomCloud(lat, lng) {
+function spawnExplosion(lat, lng) {
   if (typeof THREE === 'undefined') return;
-  const coords = globe.getCoords(lat, lng, 0.02);
-  const cloud   = createMushroomCloud();
-  // Orient so +Y points radially outward from the globe center
-  const radial = new THREE.Vector3(coords.x, coords.y, coords.z).normalize();
-  cloud.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), radial);
-  cloud.position.set(coords.x, coords.y, coords.z);
-  globe.scene().add(cloud);
+  const pos = globe.getCoords(lat, lng, 0.03);
+  const mat = new THREE.MeshStandardMaterial({
+    color: 0xffaa00, emissive: 0xff6600, emissiveIntensity: 2.5,
+    transparent: true, opacity: 1,
+  });
+  const mesh = new THREE.Mesh(new THREE.SphereGeometry(1, 8, 8), mat);
+  mesh.position.set(pos.x, pos.y, pos.z);
+  globe.scene().add(mesh);
+
+  const t0 = performance.now();
+  (function tick(now) {
+    const t = Math.min((now - t0) / 650, 1);
+    mesh.scale.setScalar(1 + t * 5);
+    mat.opacity = 1 - t;
+    mat.emissiveIntensity = 2.5 * (1 - t);
+    if (t < 1) {
+      requestAnimationFrame(tick);
+    } else {
+      globe.scene().remove(mesh);
+      mesh.geometry.dispose();
+      mat.dispose();
+    }
+  })(t0);
+}
+
+function spawnMissile(fromLat, fromLng, toLat, toLng, headColor) {
+  if (typeof THREE === 'undefined') return;
+  const mat = new THREE.MeshStandardMaterial({
+    color: headColor, emissive: headColor, emissiveIntensity: 1.8,
+  });
+  const mesh = new THREE.Mesh(new THREE.SphereGeometry(0.3, 6, 6), mat);
+  globe.scene().add(mesh);
+
+  const duration = 2200 + Math.random() * 1200;
+  const t0 = performance.now();
+  (function tick(now) {
+    const t = Math.min((now - t0) / duration, 1);
+    const lat = fromLat + (toLat - fromLat) * t;
+    const lng = fromLng + (toLng - fromLng) * t;
+    const alt = 0.22 * Math.sin(t * Math.PI); // arc above surface
+    const p = globe.getCoords(lat, lng, alt);
+    mesh.position.set(p.x, p.y, p.z);
+    if (t < 1) {
+      requestAnimationFrame(tick);
+    } else {
+      globe.scene().remove(mesh);
+      mesh.geometry.dispose();
+      mat.dispose();
+      spawnExplosion(toLat, toLng);
+    }
+  })(t0);
+}
+
+function startMissileConflict() {
+  function iranFires() {
+    spawnMissile(
+      _scatter(_IRAN.lat,   3),   _scatter(_IRAN.lng,   4),
+      _scatter(_ISRAEL.lat, 0.5), _scatter(_ISRAEL.lng, 0.7),
+      0xff5500 // orange-red
+    );
+    setTimeout(iranFires, 700 + Math.random() * 1000);
+  }
+  function israelFires() {
+    spawnMissile(
+      _scatter(_ISRAEL.lat, 0.5), _scatter(_ISRAEL.lng, 0.7),
+      _scatter(_IRAN.lat,   3),   _scatter(_IRAN.lng,   4),
+      0x44ccff // cyan-blue
+    );
+    setTimeout(israelFires, 800 + Math.random() * 1100);
+  }
+  iranFires();
+  setTimeout(israelFires, 350);
 }
 
 // ── Globe Setup ────────────────────────────────────────────
@@ -881,7 +893,7 @@ function setGlobeWorld(world) {
 // ── Init ───────────────────────────────────────────────────
 async function init() {
   initGlobe();
-  placeMushroomCloud(32.4, 53.7); // Iran
+  startMissileConflict();
   startUfoOrbit();
 
   // Wire up events
