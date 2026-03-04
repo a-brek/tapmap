@@ -15,6 +15,7 @@ const bcrypt      = require('bcryptjs');
 const path        = require('path');
 
 const db              = require('./db');
+const { pool }        = db;
 const puzzleRoutes    = require('./routes/puzzle');
 const authRoutes      = require('./routes/auth');
 const userRoutes      = require('./routes/user');
@@ -25,6 +26,7 @@ const app  = express();
 const PORT = process.env.PORT || 3001;
 
 // ── Security & Performance ────────────────────────────────
+app.set('trust proxy', 1); // required for secure cookies behind Render/fly/etc
 app.use(helmet({ contentSecurityPolicy: false }));
 app.use(cors({ origin: true, credentials: true }));
 app.use(compression());
@@ -33,7 +35,7 @@ app.use(express.json());
 // ── Sessions ──────────────────────────────────────────────
 app.use(session({
   store: new pgSession({
-    conString: process.env.DATABASE_URL,
+    pool,
     tableName: 'session',
     createTableIfMissing: true,
   }),
