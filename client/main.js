@@ -658,10 +658,20 @@ async function copyShareText() {
   const text = qs('#share-text').textContent;
   const btn  = qs('#copy-btn');
 
+  // Use native share sheet on mobile if available
+  if (navigator.share) {
+    try {
+      await navigator.share({ text });
+      return;
+    } catch (e) {
+      if (e.name === 'AbortError') return; // user dismissed — do nothing
+    }
+  }
+
+  // Fallback: copy to clipboard
   try {
     await navigator.clipboard.writeText(text);
   } catch {
-    // Fallback for browsers without clipboard API
     const ta = document.createElement('textarea');
     ta.value = text;
     ta.style.cssText = 'position:fixed;opacity:0';
@@ -672,7 +682,7 @@ async function copyShareText() {
   }
 
   btn.textContent = 'Copied!';
-  setTimeout(() => { btn.textContent = 'Copy Results'; }, 2000);
+  setTimeout(() => { btn.textContent = 'Share Results'; }, 2000);
 }
 
 // ── World Switching ────────────────────────────────────────
