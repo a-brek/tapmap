@@ -489,8 +489,16 @@ function clearCountryHighlight() {
 }
 
 // ── API ────────────────────────────────────────────────────
+function localDateStr() {
+  const d = new Date();
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}
+
 async function fetchPuzzle() {
-  const res = await fetch('/api/puzzle/today');
+  const res = await fetch(`/api/puzzle/${localDateStr()}`);
   if (!res.ok) throw new Error(`Server returned ${res.status}`);
   return res.json();
 }
