@@ -136,8 +136,12 @@ window.Auth = (() => {
     });
 
     try {
+      const localDate = (() => {
+        const d = new Date();
+        return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+      })();
       const url  = tab === 'daily'
-        ? '/api/leaderboard/daily'
+        ? `/api/leaderboard/daily/${localDate}`
         : '/api/leaderboard/alltime';
       const data = await apiFetch(url);
 
