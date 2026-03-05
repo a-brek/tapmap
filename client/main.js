@@ -337,7 +337,7 @@ function toggleHardMode() {
     _nightMode = false;
     qs('#night-btn')?.classList.remove('active');
   }
-  const texture = _hardMode ? '/textures/earth-8k-specular.jpg' : '/textures/earth-16k.jpg';
+  const texture = _hardMode ? '/textures/earth-8k-specular.webp' : '/textures/earth-8k.webp';
   globe.globeImageUrl(texture);
   qs('#hard-btn')?.classList.toggle('active', _hardMode);
 }
@@ -350,7 +350,7 @@ function toggleNightMode() {
     _hardMode = false;
     qs('#hard-btn')?.classList.remove('active');
   }
-  const texture = _nightMode ? '/textures/earth-8k-night.jpg' : '/textures/earth-16k.jpg';
+  const texture = _nightMode ? '/textures/earth-8k-night.webp' : '/textures/earth-8k.webp';
   globe.globeImageUrl(texture);
   qs('#night-btn')?.classList.toggle('active', _nightMode);
 }
@@ -360,7 +360,7 @@ let _cloudMesh = null;
 let _cloudVisible = false;
 
 function initClouds() {
-  const texture = new THREE.TextureLoader().load('/textures/earth-8k-clouds.jpg');
+  const texture = new THREE.TextureLoader().load('/textures/earth-8k-clouds.webp');
   const mat = new THREE.MeshPhongMaterial({
     map: texture,
     transparent: true,
@@ -433,7 +433,7 @@ function initGlobe() {
   globe = Globe({ animateIn: false })(container)
     .width(container.clientWidth)
     .height(container.clientHeight)
-    .globeImageUrl('/textures/earth-16k.jpg')
+    .globeImageUrl('/textures/earth-8k.webp')
     .backgroundImageUrl('/textures/stars-milkyway-8k.jpg')
     .atmosphereColor('rgba(100, 160, 255, 0.3)')
     .atmosphereAltitude(0.16)
@@ -1095,7 +1095,7 @@ const WORLD_CONFIG = {
   // ── Inner Solar System ──────────────────────────────────
   earth: {
     label:          '🌍 Earth',
-    globeImage:     '/textures/earth-16k.jpg',
+    globeImage:     '/textures/earth-8k.webp',
     bumpImage:      'https://unpkg.com/three-globe/example/img/earth-topology.png',
     atmosphere:     true,
     atmosphereColor:'rgba(100, 160, 255, 0.3)',
