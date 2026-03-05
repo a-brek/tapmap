@@ -25,6 +25,7 @@ const state = {
 };
 
 let globe = null;
+const ZAC_LABEL = { lat: -90, lng: 0, text: 'ZAC IS GAY', color: 'rgba(255,255,255,0.95)', size: 2.2, ocean: true };
 let _nextRoundTimer = null;
 const AUTO_ADVANCE_MS = 5000; // ms before auto-advancing to next round
 
@@ -405,7 +406,7 @@ function initGlobe() {
     .arcDashGap(d => d.dashGap ?? 0.12)
     .arcDashAnimateTime(d => d.dashTime ?? 2400)
     .arcStroke(d => d.stroke ?? 0.4)
-    .labelsData([])
+    .labelsData([ZAC_LABEL])
     .labelLat('lat')
     .labelLng('lng')
     .labelText('text')
@@ -538,7 +539,7 @@ async function showAllCountryBordersAndNames() {
       return { lat: c[1], lng: c[0], text: f.properties.name, color: 'rgba(200,220,255,0.5)', isCountryName: true };
     }).filter(Boolean);
 
-    globe.labelsData([...state.labels, ...countryLabels]);
+    globe.labelsData([ZAC_LABEL, ...state.labels, ...countryLabels]);
 
     globe
       .polygonsData(geo.features)
@@ -659,7 +660,7 @@ async function confirmGuess() {
     globe.pointsData([...state.markers]);
     globe.ringsData([...state.rings]);
     globe.arcsData([...state.arcs]);
-    globe.labelsData([...state.labels]);
+    globe.labelsData([ZAC_LABEL, ...state.labels]);
     if (world === 'earth') showCountryHighlight(country);
 
     // Update score display immediately
@@ -1089,7 +1090,7 @@ function setGlobeWorld(world) {
     .atmosphereAltitude(cfg.atmosphereAlt);
 
   // Ocean labels only make sense on Earth
-  globe.labelsData([...state.labels]);
+  globe.labelsData([ZAC_LABEL, ...state.labels]);
 }
 
 // ── Init ───────────────────────────────────────────────────
@@ -1179,7 +1180,7 @@ async function init() {
       globe.pointsData([...state.markers]);
       globe.arcsData([...state.arcs]);
       globe.ringsData([...state.rings]);
-      globe.labelsData([...state.labels]);
+      globe.labelsData([ZAC_LABEL, ...state.labels]);
       // Already played — go straight to results
       setTimeout(() => showGameOver(true), 650);
     } else {
