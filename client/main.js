@@ -337,7 +337,7 @@ function toggleHardMode() {
     _nightMode = false;
     qs('#night-btn')?.classList.remove('active');
   }
-  const texture = _hardMode ? '/textures/earth-8k-specular.webp' : '/textures/earth-8k.webp';
+  const texture = _hardMode ? '/textures/earth-8k-specular.webp' : '/textures/natural-earth3-8k.jpg';
   globe.globeImageUrl(texture);
   qs('#hard-btn')?.classList.toggle('active', _hardMode);
 }
@@ -350,7 +350,7 @@ function toggleNightMode() {
     _hardMode = false;
     qs('#hard-btn')?.classList.remove('active');
   }
-  const texture = _nightMode ? '/textures/earth-8k-night.webp' : '/textures/earth-8k.webp';
+  const texture = _nightMode ? '/textures/earth-8k-night.webp' : '/textures/natural-earth3-8k.jpg';
   globe.globeImageUrl(texture);
   qs('#night-btn')?.classList.toggle('active', _nightMode);
 }
@@ -427,16 +427,17 @@ function randomGlobeView(altitude = 2.2) {
   };
 }
 
+
 function initGlobe() {
   const container = qs('#globe-container');
 
   globe = Globe({ animateIn: false })(container)
     .width(container.clientWidth)
     .height(container.clientHeight)
-    .globeImageUrl('/textures/earth-8k.webp')
+    .globeImageUrl('/textures/natural-earth3-8k.jpg')
     .backgroundImageUrl('/textures/stars-milkyway-8k.jpg')
-    .atmosphereColor('rgba(100, 160, 255, 0.3)')
-    .atmosphereAltitude(0.16)
+    .atmosphereColor('rgba(50, 130, 255, 0.95)')
+    .atmosphereAltitude(0.32)
     // Markers
     .pointsData([])
     .pointLat('lat')
@@ -491,15 +492,29 @@ function initGlobe() {
 
   globe.pointOfView(randomGlobeView());
 
-  // Anisotropic filtering — keeps texture sharp when zoomed/tilted
+  // Pixel ratio — render at native resolution on retina/HiDPI screens (capped at 2x for perf)
+  {
+    const renderer = globe.renderer();
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    globe.width(container.clientWidth).height(container.clientHeight);
+  }
+
+  // Texture quality — anisotropic filtering + trilinear mipmaps for sharp zoom
   {
     const renderer = globe.renderer();
     const maxAniso = renderer.capabilities.getMaxAnisotropy();
     let attempts = 0;
-    (function applyAniso() {
+    (function applyTextureQuality() {
       const mat = globe.globeMaterial();
-      if (mat.map) { mat.map.anisotropy = maxAniso; mat.map.needsUpdate = true; }
-      else if (++attempts < 300) requestAnimationFrame(applyAniso);
+      if (mat.map) {
+        mat.map.anisotropy = maxAniso;
+        mat.map.minFilter = THREE.LinearMipmapLinearFilter;
+        mat.map.magFilter = THREE.LinearFilter;
+        mat.map.generateMipmaps = true;
+        mat.map.needsUpdate = true;
+      } else if (++attempts < 300) {
+        requestAnimationFrame(applyTextureQuality);
+      }
     })();
   }
 
@@ -1058,7 +1073,7 @@ function showGameOver(skipSave = false) {
   const shareText = [
     `Tap Map ${state.date}`,
     scores,
-    `tapmap.onrender.com`,
+    `https://maptap.onrender.com`,
     `Total Score: ${state.totalScore}/500`,
   ].join('\n');
   qs('#share-text').textContent = shareText;
@@ -1150,7 +1165,7 @@ const WORLD_CONFIG = {
   // ── Inner Solar System ──────────────────────────────────
   earth: {
     label:          '🌍 Earth',
-    globeImage:     '/textures/earth-8k.webp',
+    globeImage:     '/textures/natural-earth3-8k.jpg',
     bumpImage:      'https://unpkg.com/three-globe/example/img/earth-topology.png',
     atmosphere:     true,
     atmosphereColor:'rgba(100, 160, 255, 0.3)',
