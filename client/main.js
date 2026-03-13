@@ -355,69 +355,7 @@ function toggleNightMode() {
   qs('#night-btn')?.classList.toggle('active', _nightMode);
 }
 
-// ── Cloud Layer ─────────────────────────────────────────────────
-let _cloudMesh = null;
-let _cloudVisible = false;
 
-function initClouds() {
-  const texture = new THREE.TextureLoader().load('/textures/earth-8k-clouds.webp');
-  const mat = new THREE.MeshPhongMaterial({
-    map: texture,
-    transparent: true,
-    opacity: 0.4,
-    depthWrite: false,
-  });
-  // Globe radius in three-globe is 100 units; clouds sit just above
-  const geo = new THREE.SphereGeometry(101, 64, 64);
-  _cloudMesh = new THREE.Mesh(geo, mat);
-  _cloudMesh.visible = false;
-  globe.scene().add(_cloudMesh);
-
-  // Slowly rotate clouds
-  (function rotateClouds() {
-    if (_cloudMesh) _cloudMesh.rotation.y += 0.00008;
-    requestAnimationFrame(rotateClouds);
-  })();
-}
-
-function toggleClouds() {
-  if (!_cloudMesh) return;
-  _cloudVisible = !_cloudVisible;
-  _cloudMesh.visible = _cloudVisible;
-  qs('#cloud-btn')?.classList.toggle('active', _cloudVisible);
-}
-
-// ── Flat Earth Toggle ───────────────────────────────────────────
-let _flatEarth  = false;
-let _preFlatPov = null;
-
-function toggleFlatEarth() {
-  _flatEarth = !_flatEarth;
-  const scene   = globe.scene();
-  const startY  = scene.scale.y;
-  const targetY = _flatEarth ? 0.016 : 1.0;
-  const underside = qs('#flat-earth-underside');
-
-  if (_flatEarth) {
-    _preFlatPov = globe.pointOfView();
-    globe.pointOfView({ lat: 89.9, lng: 0, altitude: 2.4 }, 1500);
-    if (underside) underside.removeAttribute('hidden');
-  } else {
-    if (_preFlatPov) globe.pointOfView(_preFlatPov, 1500);
-    if (underside) underside.setAttribute('hidden', '');
-  }
-
-  const t0 = performance.now();
-  (function tick(now) {
-    const t = Math.min((now - t0) / 1500, 1);
-    const e = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-    scene.scale.y = startY + (targetY - startY) * e;
-    if (t < 1) requestAnimationFrame(tick);
-  })(t0);
-
-  const btn = qs('#flat-btn');
-  if (btn) btn.title = _flatEarth ? 'Restore Earth' : 'Flat Earth Mode';
-}
 // ── Globe Setup ────────────────────────────────────────────
 function randomGlobeView(altitude = 2.2) {
   return {
@@ -1305,11 +1243,7 @@ async function init() {
     qs('#game-over').removeAttribute('hidden');
   });
   qs('#hard-btn')?.addEventListener('click', toggleHardMode);
-  qs('#cloud-btn')?.addEventListener('click', toggleClouds);
   qs('#night-btn')?.addEventListener('click', toggleNightMode);
-  qs('#flat-btn')?.addEventListener('click', toggleFlatEarth);
-  initClouds();
-  qs('#game-title').addEventListener('dblclick', toggleFlatEarth);
 
   // Auth init and puzzle fetch run in parallel
   try {
