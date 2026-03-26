@@ -1601,118 +1601,118 @@
     "lng": -149.5667,
     "tier": 4
   },
-
   {
-    "name": "Apollo 11 Landing Site",
-    "lat": 0.674,
-    "lng": 23.473,
-    "tier": 1,
-    "world": "moon"
+    "name": "Bridgetown, Barbados",
+    "lat": 13.0975,
+    "lng": -59.6167,
+    "tier": 5
   },
   {
-    "name": "Sea of Tranquility (Mare Tranquillitatis)",
-    "lat": 8.5,
-    "lng": 31.4,
-    "tier": 2,
-    "world": "moon"
+    "name": "Port of Spain, Trinidad and Tobago",
+    "lat": 10.6596,
+    "lng": -61.5086,
+    "tier": 5
   },
   {
-    "name": "Tycho Crater",
-    "lat": -43.3,
-    "lng": -11.22,
-    "tier": 3,
-    "world": "moon"
+    "name": "Roseau, Dominica",
+    "lat": 15.2976,
+    "lng": -61.3897,
+    "tier": 5
   },
   {
-    "name": "Copernicus Crater",
-    "lat": 9.62,
-    "lng": -20.08,
-    "tier": 3,
-    "world": "moon"
+    "name": "Castries, Saint Lucia",
+    "lat": 14.0101,
+    "lng": -60.9875,
+    "tier": 5
   },
   {
-    "name": "Aristarchus Crater",
-    "lat": 23.7,
-    "lng": -47.4,
-    "tier": 3,
-    "world": "moon"
+    "name": "Kingstown, Saint Vincent and the Grenadines",
+    "lat": 13.1587,
+    "lng": -61.2248,
+    "tier": 5
   },
   {
-    "name": "Apollo 12 Landing Site",
-    "lat": -3.012,
-    "lng": -23.422,
-    "tier": 4,
-    "world": "moon"
+    "name": "St. George's, Grenada",
+    "lat": 12.0526,
+    "lng": -61.7519,
+    "tier": 5
   },
   {
-    "name": "Mare Imbrium (Sea of Rains)",
-    "lat": 32.8,
-    "lng": -15.6,
-    "tier": 2,
-    "world": "moon"
+    "name": "Basseterre, Saint Kitts and Nevis",
+    "lat": 17.3026,
+    "lng": -62.7177,
+    "tier": 5
   },
   {
-    "name": "Shackleton Crater (South Pole)",
-    "lat": -89.54,
-    "lng": 0,
-    "tier": 5,
-    "world": "moon"
-  },
-
-  {
-    "name": "Olympus Mons",
-    "lat": 18.65,
-    "lng": -133.8,
-    "tier": 1,
-    "world": "mars"
+    "name": "St. John's, Antigua and Barbuda",
+    "lat": 17.1274,
+    "lng": -61.8468,
+    "tier": 5
   },
   {
-    "name": "Valles Marineris",
-    "lat": -13.9,
-    "lng": -59.3,
-    "tier": 2,
-    "world": "mars"
+    "name": "Cayenne, French Guiana",
+    "lat": 4.9224,
+    "lng": -52.3135,
+    "tier": 5
   },
   {
-    "name": "Curiosity Landing Site (Gale Crater)",
-    "lat": -4.589,
-    "lng": 137.441,
-    "tier": 3,
-    "world": "mars"
+    "name": "São Tomé, São Tomé and Príncipe",
+    "lat": 0.3365,
+    "lng": 6.7273,
+    "tier": 5
   },
   {
-    "name": "Perseverance Landing Site (Jezero Crater)",
-    "lat": 18.38,
-    "lng": 77.58,
-    "tier": 4,
-    "world": "mars"
+    "name": "Bissau, Guinea-Bissau",
+    "lat": 11.8636,
+    "lng": -15.5977,
+    "tier": 5
   },
   {
-    "name": "Hellas Planitia",
-    "lat": -42.4,
-    "lng": 70.0,
-    "tier": 3,
-    "world": "mars"
+    "name": "Juba, South Sudan",
+    "lat": 4.8594,
+    "lng": 31.5713,
+    "tier": 3
   },
   {
-    "name": "Opportunity Landing Site (Victoria Crater)",
-    "lat": -2.07,
-    "lng": -5.53,
-    "tier": 4,
-    "world": "mars"
+    "name": "Gitega, Burundi",
+    "lat": -3.4271,
+    "lng": 29.9246,
+    "tier": 5
   },
   {
-    "name": "Tharsis Plateau",
-    "lat": 0,
-    "lng": -110,
-    "tier": 3,
-    "world": "mars"
+    "name": "San Marino",
+    "lat": 43.9424,
+    "lng": 12.4578,
+    "tier": 5
   },
   {
-    "name": "North Polar Ice Cap (Mars)",
-    "lat": 87,
-    "lng": 0,
-    "tier": 5,
-    "world": "mars"
+    "name": "Ngerulmud, Palau",
+    "lat": 7.5006,
+    "lng": 134.6239,
+    "tier": 5
+  },
+  {
+    "name": "Yaren, Nauru",
+    "lat": -0.5477,
+    "lng": 166.9209,
+    "tier": 5
+  },
+  {
+    "name": "Avarua, Cook Islands",
+    "lat": -21.2075,
+    "lng": -159.7751,
+    "tier": 5
+  },
+  {
+    "name": "Hanga Roa, Easter Island",
+    "lat": -27.1127,
+    "lng": -109.3497,
+    "tier": 5
+  },
+  {
+    "name": "Sanaa, Yemen",
+    "lat": 15.3694,
+    "lng": 44.191,
+    "tier": 4
   }
 ]
