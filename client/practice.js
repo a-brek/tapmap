@@ -74,7 +74,7 @@ const _TX  = 'https://cdn.jsdelivr.net/gh/jeromeetienne/threex.planets@master/im
 const _SSC = 'https://www.solarsystemscope.com/textures/download/';
 
 const WORLD_CONFIG = {
-  earth:    { label: '🌍 Earth',    globeImage: '/textures/earth-8k.jpg', bumpImage: 'https://unpkg.com/three-globe/example/img/earth-topology.png', atmosphere: true,  atmosphereColor: 'rgba(100, 160, 255, 0.3)', atmosphereAlt: 0.16, showOceans: true  },
+  earth:    { label: '🌍 Earth',    globeImage: '/textures/natural-earth3-8k.jpg', bumpImage: 'https://unpkg.com/three-globe/example/img/earth-topology.png', atmosphere: true,  atmosphereColor: 'rgba(50, 130, 255, 0.95)', atmosphereAlt: 0.32, showOceans: true  },
   moon:     { label: '🌕 Moon',     globeImage: `${_TX}moonmap1k.jpg`,          bumpImage: `${_TX}moonbump1k.jpg`,     atmosphere: false, atmosphereColor: 'rgba(0,0,0,0)',              atmosphereAlt: 0.01, showOceans: false },
   mars:     { label: '🔴 Mars',     globeImage: `${_TX}marsmap1k.jpg`,          bumpImage: `${_TX}marsbump1k.jpg`,     atmosphere: true,  atmosphereColor: 'rgba(200, 120, 80, 0.25)',   atmosphereAlt: 0.08, showOceans: false },
   mercury:  { label: '🪨 Mercury',  globeImage: `${_TX}mercurymap1k.jpg`,       bumpImage: `${_TX}mercurybump1k.jpg`,  atmosphere: false, atmosphereColor: 'rgba(0,0,0,0)',              atmosphereAlt: 0.01, showOceans: false },
@@ -105,12 +105,33 @@ const COUNTRY_ALIASES = {
   'south korea': 'republic of korea', 'czech republic': 'czechia',
   'ivory coast': "côte d'ivoire", 'burma': 'myanmar', 'tibet': 'china',
 };
-let _worldGeoCache = null;
+const SPLIT_COUNTRY_ISO = {
+  'united states of america': 'US', 'united states': 'US', 'usa': 'US',
+  'canada': 'CA', 'australia': 'AU',
+};
+const SPLIT_ISO_SET = new Set(['US', 'CA', 'AU']);
+
+let _worldGeoCache  = null;
+let _admin1GeoCache = null;
+
 async function loadWorldGeo() {
   if (_worldGeoCache) return _worldGeoCache;
   const res = await fetch('https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson');
   _worldGeoCache = await res.json();
   return _worldGeoCache;
+}
+async function loadAdmin1Geo() {
+  if (_admin1GeoCache) return _admin1GeoCache;
+  const res = await fetch(
+    'https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_50m_admin_1_states_provinces.geojson'
+  );
+  _admin1GeoCache = await res.json();
+  return _admin1GeoCache;
+}
+function getSubdivisions(admin1Geo, isoA2) {
+  return admin1Geo.features.filter(f =>
+    f.properties.adm0_a2 === isoA2 || f.properties.iso_a2 === isoA2
+  );
 }
 function findCountry(geo, rawName) {
   const key = (COUNTRY_ALIASES[rawName.toLowerCase()] ?? rawName).toLowerCase();
@@ -121,12 +142,96 @@ function findCountry(geo, rawName) {
 }
 async function showCountryHighlight(countryName) {
   try {
-    const geo = await loadWorldGeo();
+    const isoA2 = SPLIT_COUNTRY_ISO[countryName.toLowerCase()];
+    if (isoA2) {
+      const admin1 = await loadAdmin1Geo();
+      const subdivs = getSubdivisions(admin1, isoA2);
+      if (subdivs.length) { globe.polygonsData(subdivs); return; }
+    }
+    const geo     = await loadWorldGeo();
     const feature = findCountry(geo, countryName);
     if (feature) globe.polygonsData([feature]);
-  } catch (_) {}
+  } catch (err) {
+    console.warn('Country highlight failed:', err);
+  }
 }
 function clearCountryHighlight() { globe.polygonsData([]); }
+
+function _polyRingCentroid(ring) {
+  let x = 0, y = 0;
+  for (const [lng, lat] of ring) { x += lng; y += lat; }
+  return [x / ring.length, y / ring.length];
+}
+function _featureCentroid(feature) {
+  try {
+    const geom = feature.geometry;
+    if (geom.type === 'Polygon') return _polyRingCentroid(geom.coordinates[0]);
+    if (geom.type === 'MultiPolygon') {
+      let best = null, bestLen = 0;
+      for (const poly of geom.coordinates) {
+        if (poly[0].length > bestLen) { bestLen = poly[0].length; best = poly[0]; }
+      }
+      return best ? _polyRingCentroid(best) : null;
+    }
+  } catch (_) {}
+  return null;
+}
+
+async function showAllCountryBordersAndNames() {
+  try {
+    const [geo, admin1] = await Promise.all([loadWorldGeo(), loadAdmin1Geo()]);
+
+    const highlightSet = new Set();
+    state.roundScores.forEach(r => { if (r.country) highlightSet.add(r.country.toLowerCase()); });
+
+    const highlightedSplitISO = new Set();
+    for (const h of highlightSet) {
+      const iso = SPLIT_COUNTRY_ISO[h];
+      if (iso) highlightedSplitISO.add(iso);
+    }
+
+    const worldFeatures = geo.features.filter(f => !SPLIT_COUNTRY_ISO[(f.properties.name || '').toLowerCase()]);
+    const subdivFeatures = admin1.features.filter(f =>
+      SPLIT_ISO_SET.has(f.properties.adm0_a2) || SPLIT_ISO_SET.has(f.properties.iso_a2)
+    );
+    const allFeatures = [...worldFeatures, ...subdivFeatures];
+
+    function isHighlighted(f) {
+      const adm0 = f.properties.adm0_a2 || f.properties.iso_a2;
+      if (adm0 && highlightedSplitISO.has(adm0)) return true;
+      const name = (f.properties.name || '').toLowerCase();
+      for (const h of highlightSet) {
+        if (name === h || name.includes(h) || h.includes(name)) return true;
+      }
+      return false;
+    }
+
+    const countryLabels = allFeatures.map(f => {
+      const c = _featureCentroid(f);
+      if (!c) return null;
+      const text = f.properties.name || f.properties.NAME || '';
+      return { lat: c[1], lng: c[0], text, color: 'rgba(200,220,255,0.5)', isCountryName: true };
+    }).filter(Boolean);
+
+    globe
+      .labelsData([...OCEAN_LABELS, ...state.labels, ...countryLabels])
+      .labelSize(d => d.isCountryName ? 0.28 : (d.ocean ? 0.55 : 0.75))
+      .labelDotRadius(d => (d.ocean || d.isCountryName) ? 0 : 0.32)
+      .labelIncludeDot(d => !d.ocean && !d.isCountryName);
+
+    globe
+      .polygonsData(allFeatures)
+      .polygonCapColor(f => isHighlighted(f) ? 'rgba(0,201,167,0.15)' : 'rgba(255,255,255,0.02)')
+      .polygonSideColor(f => isHighlighted(f) ? 'rgba(0,201,167,0.08)' : 'rgba(255,255,255,0.01)')
+      .polygonStrokeColor(f => isHighlighted(f) ? 'rgba(0,201,167,0.9)' : 'rgba(200,220,255,0.3)');
+
+    globe.pointsData([...state.markers]);
+    globe.arcsData([...state.arcs]);
+    globe.ringsData([...state.rings]);
+  } catch (err) {
+    console.warn('Failed to show country borders:', err);
+  }
+}
 
 // ── Globe ───────────────────────────────────────────────────
 function randomGlobeView() {
@@ -139,10 +244,10 @@ function initGlobe() {
   globe = Globe({ animateIn: false })(container)
     .width(container.clientWidth)
     .height(container.clientHeight)
-    .globeImageUrl('/textures/earth-8k.jpg')
+    .globeImageUrl('/textures/natural-earth3-8k.jpg')
     .backgroundImageUrl('/textures/stars-milkyway-8k.jpg')
-    .atmosphereColor('rgba(100, 160, 255, 0.3)')
-    .atmosphereAltitude(0.16)
+    .atmosphereColor('rgba(50, 130, 255, 0.95)')
+    .atmosphereAltitude(0.32)
     .pointsData([]).pointLat('lat').pointLng('lng').pointColor('color').pointRadius('size').pointAltitude('altitude')
     .ringsData([]).ringLat('lat').ringLng('lng').ringColor(() => t => `rgba(0, 201, 167, ${(1 - t) * 0.8})`).ringMaxRadius(4).ringPropagationSpeed(1.4).ringRepeatPeriod(2000)
     .arcsData([]).arcStartLat('startLat').arcStartLng('startLng').arcEndLat('endLat').arcEndLng('endLng').arcColor('color').arcDashLength(0.45).arcDashGap(0.12).arcDashAnimateTime(2400).arcStroke(0.45)
@@ -377,6 +482,8 @@ function showGameOver() {
   const overlay = qs('#game-over');
   overlay.removeAttribute('hidden');
   requestAnimationFrame(() => requestAnimationFrame(() => overlay.classList.add('visible')));
+
+  showAllCountryBordersAndNames();
 }
 
 // ── Reset & play again ──────────────────────────────────────
